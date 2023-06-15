@@ -48,7 +48,7 @@ public:
 
 	// set the insistance value by insistence name
 	UFUNCTION(BlueprintCallable)
-	void SetInsistenceValueByName(const FName name, int32 insistenceValue, bool& success);
+	void SetInsistenceValueByName(const FName name, int32 insistenceValue, int32& newInsistenceValue, bool& success);
 
 	// Check if an insistence exists in the utility component
 	UFUNCTION(BlueprintPure)
