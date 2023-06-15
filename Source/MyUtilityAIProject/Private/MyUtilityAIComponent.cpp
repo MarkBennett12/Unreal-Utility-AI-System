@@ -63,6 +63,21 @@ void UMyUtilityAIComponent::GetInsistenceValueByName(const FName name, int32& in
 	success = false;
 }
 
+void UMyUtilityAIComponent::SetInsistenceValueByName(const FName name, int32 insistenceValue, bool& success)
+{
+	for (auto& currentInsistence : Insistences)
+	{
+		if (currentInsistence.Name == name)
+		{
+			currentInsistence.Value = insistenceValue;
+			success = true;
+			return;
+		}
+	}
+
+	success = false;
+}
+
 bool UMyUtilityAIComponent::HasInsistance(const FName name)
 {
 	for (auto& currentInsistence : Insistences)
