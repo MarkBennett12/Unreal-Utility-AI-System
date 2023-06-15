@@ -32,3 +32,47 @@ void UMyUtilityAIComponent::TickComponent(float DeltaTime, ELevelTick TickType, 
 	// ...
 }
 
+void UMyUtilityAIComponent::GetInsistenceByName(const FName name, FInsistence& insistence, bool& success)
+{
+	for (auto& currentInsistence : Insistences)
+	{
+		if (currentInsistence.Name == name)
+		{
+			insistence = currentInsistence;
+			success = true;
+			return;
+		}
+	}
+	
+	success = false;
+}
+
+void UMyUtilityAIComponent::GetInsistenceValueByName(const FName name, int32& insistenceValue, bool& success)
+{
+	for (auto& currentInsistence : Insistences)
+	{
+		if (currentInsistence.Name == name)
+		{
+			insistenceValue = currentInsistence.Value;
+			success = true;
+			return;
+		}
+	}
+
+	insistenceValue = -1;
+	success = false;
+}
+
+bool UMyUtilityAIComponent::HasInsistance(const FName name)
+{
+	for (auto& currentInsistence : Insistences)
+	{
+		if (currentInsistence.Name == name)
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
