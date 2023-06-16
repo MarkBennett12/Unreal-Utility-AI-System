@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "UtilityActionBase.h"
 #include "MyUtilityAIComponent.generated.h"
 
 // Used to store the insistence values for the utility calculations
@@ -32,6 +33,9 @@ public:
 
 	UPROPERTY(BlueprintReadOnly)
 	FInsistence MaxInsistence;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<UUtilityActionBase*> Actions;
 
 protected:
 	// Called when the game starts
