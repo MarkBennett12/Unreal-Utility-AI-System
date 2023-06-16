@@ -28,14 +28,14 @@ public:
 	// Sets default values for this component's properties
 	UMyUtilityAIComponent();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Utility AI")
 	TArray<FInsistence> Insistences;
 
 	UPROPERTY(BlueprintReadOnly)
 	FInsistence MaxInsistence;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TArray<UUtilityActionBase*> Actions;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Utility AI", meta = (ExposeOnSpawn = "true"))
+	TSet<TSubclassOf<UUtilityActionBase>> Actions;
 
 protected:
 	// Called when the game starts

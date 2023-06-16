@@ -12,9 +12,9 @@ struct FInsistenceSatisfaction
 {
 	GENERATED_BODY()
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Insistence")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Satisfaction")
 		int32 SatisfactionValue = 0;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Insistence")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Satisfaction")
 		FName InsistenceName = "";
 };
 
