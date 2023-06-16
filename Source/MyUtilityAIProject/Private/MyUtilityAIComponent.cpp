@@ -11,6 +11,8 @@ UMyUtilityAIComponent::UMyUtilityAIComponent()
 	PrimaryComponentTick.bCanEverTick = true;
 
 	// ...
+	//MaxInsistence.Name = "";
+	//MaxInsistence.Value = 0;
 }
 
 
@@ -30,6 +32,16 @@ void UMyUtilityAIComponent::TickComponent(float DeltaTime, ELevelTick TickType, 
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// ...
+	for (auto& currentInsistence : Insistences)
+	{
+		//UE_LOG(LogTemp, Display, TEXT("currentInsistence %d"), currentInsistence.Value);
+
+		if (currentInsistence.Value > MaxInsistence.Value)
+		{
+			MaxInsistence = currentInsistence;
+			//UE_LOG(LogTemp, Display, TEXT("MaxInsistence %d"), MaxInsistence.Value);
+		}
+	}
 }
 
 void UMyUtilityAIComponent::GetInsistenceByName(const FName name, FInsistence& insistence, bool& success)

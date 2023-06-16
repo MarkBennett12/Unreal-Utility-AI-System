@@ -13,9 +13,9 @@ struct FInsistence
 	GENERATED_BODY()
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Insistence")
-	int32 Value;
+	int32 Value = 0;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Insistence")
-	FName Name;
+	FName Name = "";
 };
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -29,6 +29,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<FInsistence> Insistences;
+
+	UPROPERTY(BlueprintReadOnly)
+	FInsistence MaxInsistence;
 
 protected:
 	// Called when the game starts
