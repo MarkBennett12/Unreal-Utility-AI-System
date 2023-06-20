@@ -14,9 +14,9 @@ struct FInsistence
 	GENERATED_BODY()
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Insistence")
-	int32 Value = 0;
+	int32 Value;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Insistence")
-	FName Name = "";
+	FName Name;
 };
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -34,8 +34,17 @@ public:
 	UPROPERTY(BlueprintReadOnly)
 	FInsistence MaxInsistence;
 
+	// we need to store both the classes and pointers to the action instances, hence the two data structures
+	// I'm hoping to find a better way to do this, maybe editor only
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Utility AI", meta = (ExposeOnSpawn = "true"))
-	TSet<TSubclassOf<UUtilityActionBase>> Actions;
+	TSet<TSubclassOf<UUtilityActionBase>> ActionClasses;
+
+	// the pointers to the actual instances, though so far only getting the default class
+	UPROPERTY()
+	TSet<UUtilityActionBase*> ActionInstances;
+
+	UPROPERTY(BlueprintReadOnly)
+	UUtilityActionBase* CurrentAction;
 
 protected:
 	// Called when the game starts
