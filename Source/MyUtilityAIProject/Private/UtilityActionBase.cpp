@@ -3,3 +3,11 @@
 
 #include "UtilityActionBase.h"
 
+void UUtilityActionBase::InitAction()
+{
+	ActionName = "";
+
+	InsistenceSatisfaction = FInsistenceSatisfaction();
+	InsistenceSatisfaction.InsistenceName = "";
+	InsistenceSatisfaction.SatisfactionValue = 0;
+}

@@ -14,9 +14,9 @@ struct FInsistence
 	GENERATED_BODY()
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Insistence")
-	int32 Value;
+	int32 Value = 0;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Insistence")
-	FName Name;
+	FName Name = "";
 };
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -41,9 +41,10 @@ public:
 
 	// the pointers to the actual instances, though so far only getting the default class
 	UPROPERTY()
-	TSet<UUtilityActionBase*> ActionInstances;
+	TArray<UUtilityActionBase*> ActionInstances;
 
-	UPROPERTY(BlueprintReadOnly)
+private:
+	//UPROPERTY()
 	UUtilityActionBase* CurrentAction;
 
 protected:
@@ -69,4 +70,10 @@ public:
 	// Check if an insistence exists in the utility component
 	UFUNCTION(BlueprintPure)
 	bool HasInsistance(const FName name);
+
+	UFUNCTION(BlueprintPure)
+	UUtilityActionBase* GetCurrentAction();
+
+	// Check if an insistence exists in the utility component
+	void UpdateBestAction();
 };

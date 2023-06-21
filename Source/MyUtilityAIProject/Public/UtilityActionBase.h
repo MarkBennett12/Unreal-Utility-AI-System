@@ -13,9 +13,9 @@ struct FInsistenceSatisfaction
 	GENERATED_BODY()
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Satisfaction")
-		int32 SatisfactionValue;
+		int32 SatisfactionValue = 0;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Satisfaction")
-		FName InsistenceName;
+		FName InsistenceName = "";
 };
 
 /**
@@ -27,7 +27,11 @@ class MYUTILITYAIPROJECT_API UUtilityActionBase : public UObject
 	GENERATED_BODY()
 	
 public:
+	void InitAction();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Action")
+	FName ActionName;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Action")
 	FInsistenceSatisfaction InsistenceSatisfaction;
 };

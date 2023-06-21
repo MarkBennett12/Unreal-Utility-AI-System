@@ -10,11 +10,8 @@ UMyUtilityAIComponent::UMyUtilityAIComponent()
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
 
-	// ...
-	//MaxInsistence.Name = "";
-	//MaxInsistence.Value = 0;
-
-	//UE_LOG(LogTemp, Display, TEXT("constructor finished, Actions.Num() = %d"), Actions.Num());
+	MaxInsistence = FInsistence();
+	//UE_LOG(LogTemp, Display, TEXT("actionclasses in constructor size = %d"), ActionClasses.Num());
 }
 
 
@@ -23,23 +20,15 @@ void UMyUtilityAIComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// this could have been a nming conflict
-	//// for some reason this has an empty element added when it gets here so I'm getting rid of it
-	//UE_LOG(LogTemp, Display, TEXT("BeginPlay started, Actions.Num() = %d"), ActionInstances.Num());
-	//ActionInstances.Empty();
-	//UE_LOG(LogTemp, Display, TEXT("Actions emptied, Actions.Num() = %d"), ActionInstances.Num());
+	//UE_LOG(LogTemp, Display, TEXT("actionclasses size in beginplay = %d"), ActionClasses.Num());
 
 	// instance all the actions
 	for (auto& actionClass : ActionClasses)
 	{
-		UE_LOG(LogTemp, Display, TEXT("Actions emptied, Actions.Num() = %s"), *actionClass.Get()->GetName());
-
-		// only creating the default object so far, why??
 		UUtilityActionBase* newAction = NewObject<UUtilityActionBase>(this, actionClass);
 
 		if (newAction)
-		{			
-			UE_LOG(LogTemp, Display, TEXT("new action %s has been created and has the name %s and the value %d"), *actionClass.Get()->GetName(), *newAction->InsistenceSatisfaction.InsistenceName.ToString(), newAction->InsistenceSatisfaction.SatisfactionValue);
+		{	
 			ActionInstances.Add(newAction);
 		}
 		else
@@ -48,6 +37,8 @@ void UMyUtilityAIComponent::BeginPlay()
 		}
 	}
 
+	CurrentAction = ActionInstances[0];
+	UpdateBestAction();
 }
 
 
@@ -57,16 +48,22 @@ void UMyUtilityAIComponent::TickComponent(float DeltaTime, ELevelTick TickType, 
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// ...
-	FInsistence newMaxInsistence;
+	UpdateBestAction();
+}
+
+void UMyUtilityAIComponent::UpdateBestAction()
+{
+	FInsistence newMaxInsistence = FInsistence();
 
 	for (auto& currentInsistence : Insistences)
 	{
-		//UE_LOG(LogTemp, Display, TEXT("currentInsistence %d"), currentInsistence.Value);
+		//UE_LOG(LogTemp, Display, TEXT("currentInsistence name %s, value %d"), *currentInsistence.Name.ToString(), currentInsistence.Value);
+		//UE_LOG(LogTemp, Display, TEXT("MaxInsistence %s with value %d"), *MaxInsistence.Name.ToString(), MaxInsistence.Value);
 
-		if (currentInsistence.Value > MaxInsistence.Value)
+		if (currentInsistence.Value > newMaxInsistence.Value)
 		{
 			newMaxInsistence = currentInsistence;
-			//UE_LOG(LogTemp, Display, TEXT("MaxInsistence %d"), MaxInsistence.Value);
+			UE_LOG(LogTemp, Display, TEXT("newMaxInsistence %s with value %d"), *newMaxInsistence.Name.ToString(), newMaxInsistence.Value);
 		}
 	}
 
@@ -74,16 +71,37 @@ void UMyUtilityAIComponent::TickComponent(float DeltaTime, ELevelTick TickType, 
 	if (newMaxInsistence.Name != MaxInsistence.Name)
 	{
 		MaxInsistence = newMaxInsistence;
-		//UUtilityActionBase* bestAction;
+		UE_LOG(LogTemp, Display, TEXT("New MaxInsistence should be %s with value %d"), *MaxInsistence.Name.ToString(), MaxInsistence.Value);
+
+		UUtilityActionBase* bestAction = CurrentAction;
 
 		for (auto& action : ActionInstances)
 		{
-			UE_LOG(LogTemp, Display, TEXT("the action %s has the value %d"), *action->InsistenceSatisfaction.InsistenceName.ToString(), action->InsistenceSatisfaction.SatisfactionValue);
-			//UE_LOG(LogTemp, Display, TEXT("Action name %s value %d"), action->InsistenceSatisfaction.InsistenceName, action->InsistenceSatisfaction.SatisfactionValue);
+			//UE_LOG(LogTemp, Display, TEXT("the insistence being satisfied is %s has the value %d"), *MaxInsistence.Name.ToString(), MaxInsistence.Value);
+			//UE_LOG(LogTemp, Display, TEXT("the action being considered is %s and satisfies insistence %s with value %d"), *action->ActionName.ToString(), *action->InsistenceSatisfaction.InsistenceName.ToString(), action->InsistenceSatisfaction.SatisfactionValue);
+			
+			if (action->InsistenceSatisfaction.InsistenceName == MaxInsistence.Name && action->InsistenceSatisfaction.SatisfactionValue > bestAction->InsistenceSatisfaction.SatisfactionValue)
+			{
+				bestAction = action;
+				UE_LOG(LogTemp, Display, TEXT("the best action is %s and satisfies insistence %s by %d"), *bestAction->ActionName.ToString(), *bestAction->InsistenceSatisfaction.InsistenceName.ToString(), bestAction->InsistenceSatisfaction.SatisfactionValue);
+			}
+		}
 
-			//if(action)
+		// there's a new best action
+		if (bestAction->ActionName != CurrentAction->ActionName)
+		{
+			//UE_LOG(LogTemp, Display, TEXT("the best action is %s and satisfies insistence %s by %d"), *bestAction->ActionName.ToString(), *bestAction->InsistenceSatisfaction.InsistenceName.ToString(), bestAction->InsistenceSatisfaction.SatisfactionValue);
+			CurrentAction = bestAction;
+			//UE_LOG(LogTemp, Display, TEXT("CurrentAction name = %s, insistence name = %s, insistence value = %d"), *CurrentAction->ActionName.ToString(), *CurrentAction->InsistenceSatisfaction.InsistenceName.ToString(), CurrentAction->InsistenceSatisfaction.SatisfactionValue);
 		}
 	}
+
+	UE_LOG(LogTemp, Display, TEXT("The --final-- CurrentAction name = %s, insistence name = %s, insistence value = %d"), *CurrentAction->ActionName.ToString(), *CurrentAction->InsistenceSatisfaction.InsistenceName.ToString(), CurrentAction->InsistenceSatisfaction.SatisfactionValue);
+}
+
+UUtilityActionBase* UMyUtilityAIComponent::GetCurrentAction()
+{
+	return CurrentAction;
 }
 
 void UMyUtilityAIComponent::GetInsistenceByName(const FName name, FInsistence& insistence, bool& success)
