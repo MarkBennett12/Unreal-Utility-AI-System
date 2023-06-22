@@ -11,3 +11,10 @@ void UUtilityActionBase::InitAction()
 	InsistenceSatisfaction.InsistenceName = "";
 	InsistenceSatisfaction.SatisfactionValue = 0;
 }
+
+void UUtilityActionBase::Tick(float DeltaTime)
+{
+	
+	UE_LOG(LogTemp, Display, TEXT("action tick, current world is %s, outer is %s"), *this->GetWorld()->GetName(), *this->GetOuter()->GetName());
+	OnTick(DeltaTime);
+}

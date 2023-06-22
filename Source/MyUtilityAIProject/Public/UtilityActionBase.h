@@ -6,16 +6,18 @@
 #include "UObject/NoExportTypes.h"
 #include "UtilityActionBase.generated.h"
 
+const FString EditorCategory = "Utility AI";
+
 // Used to store the insistence values for the utility calculations
 USTRUCT(BlueprintType)
 struct FInsistenceSatisfaction
 {
 	GENERATED_BODY()
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Satisfaction")
-		int32 SatisfactionValue = 0;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Satisfaction")
-		FName InsistenceName = "";
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = EditorCategory)
+	FName InsistenceName = "";
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = EditorCategory)
+	float SatisfactionValue = 0;
 };
 
 /**
@@ -29,9 +31,15 @@ class MYUTILITYAIPROJECT_API UUtilityActionBase : public UObject
 public:
 	void InitAction();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Action")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = EditorCategory)
 	FName ActionName;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Action")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = EditorCategory)
 	FInsistenceSatisfaction InsistenceSatisfaction;
+
+	// Blueprint event for the user to implement thier action logic
+	UFUNCTION(BlueprintImplementableEvent, Category = EditorCategory)
+	void OnTick(float DeltaTime);
+
+	void Tick(float DeltaTime);
 };

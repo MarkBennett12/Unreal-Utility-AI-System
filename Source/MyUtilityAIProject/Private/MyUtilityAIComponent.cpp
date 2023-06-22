@@ -20,6 +20,8 @@ void UMyUtilityAIComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
+	//this->get
+
 	//UE_LOG(LogTemp, Display, TEXT("actionclasses size in beginplay = %d"), ActionClasses.Num());
 
 	// instance all the actions
@@ -49,6 +51,10 @@ void UMyUtilityAIComponent::TickComponent(float DeltaTime, ELevelTick TickType, 
 
 	// ...
 	UpdateBestAction();
+
+	// carry out the selected action
+	UE_LOG(LogTemp, Display, TEXT("Tick, current action is %s and satisfies insistence %s by %d"), *CurrentAction->ActionName.ToString(), *CurrentAction->InsistenceSatisfaction.InsistenceName.ToString(), CurrentAction->InsistenceSatisfaction.SatisfactionValue);
+	CurrentAction->Tick(DeltaTime);
 }
 
 void UMyUtilityAIComponent::UpdateBestAction()
@@ -63,15 +69,16 @@ void UMyUtilityAIComponent::UpdateBestAction()
 		if (currentInsistence.Value > newMaxInsistence.Value)
 		{
 			newMaxInsistence = currentInsistence;
-			UE_LOG(LogTemp, Display, TEXT("newMaxInsistence %s with value %d"), *newMaxInsistence.Name.ToString(), newMaxInsistence.Value);
+			//UE_LOG(LogTemp, Display, TEXT("newMaxInsistence %s with value %d"), *newMaxInsistence.Name.ToString(), newMaxInsistence.Value);
 		}
 	}
 
 	// check if the insistence has changed before looking for a new action
+	// may need to think about this, should we search for a better action every tick anyway as a better option might crop up if the situation changes
 	if (newMaxInsistence.Name != MaxInsistence.Name)
 	{
 		MaxInsistence = newMaxInsistence;
-		UE_LOG(LogTemp, Display, TEXT("New MaxInsistence should be %s with value %d"), *MaxInsistence.Name.ToString(), MaxInsistence.Value);
+		//UE_LOG(LogTemp, Display, TEXT("New MaxInsistence should be %s with value %d"), *MaxInsistence.Name.ToString(), MaxInsistence.Value);
 
 		UUtilityActionBase* bestAction = CurrentAction;
 
@@ -83,7 +90,7 @@ void UMyUtilityAIComponent::UpdateBestAction()
 			if (action->InsistenceSatisfaction.InsistenceName == MaxInsistence.Name && action->InsistenceSatisfaction.SatisfactionValue > bestAction->InsistenceSatisfaction.SatisfactionValue)
 			{
 				bestAction = action;
-				UE_LOG(LogTemp, Display, TEXT("the best action is %s and satisfies insistence %s by %d"), *bestAction->ActionName.ToString(), *bestAction->InsistenceSatisfaction.InsistenceName.ToString(), bestAction->InsistenceSatisfaction.SatisfactionValue);
+				//UE_LOG(LogTemp, Display, TEXT("the best action is %s and satisfies insistence %s by %d"), *bestAction->ActionName.ToString(), *bestAction->InsistenceSatisfaction.InsistenceName.ToString(), bestAction->InsistenceSatisfaction.SatisfactionValue);
 			}
 		}
 
@@ -96,7 +103,7 @@ void UMyUtilityAIComponent::UpdateBestAction()
 		}
 	}
 
-	UE_LOG(LogTemp, Display, TEXT("The --final-- CurrentAction name = %s, insistence name = %s, insistence value = %d"), *CurrentAction->ActionName.ToString(), *CurrentAction->InsistenceSatisfaction.InsistenceName.ToString(), CurrentAction->InsistenceSatisfaction.SatisfactionValue);
+	//UE_LOG(LogTemp, Display, TEXT("The --final-- CurrentAction name = %s, insistence name = %s, insistence value = %d"), *CurrentAction->ActionName.ToString(), *CurrentAction->InsistenceSatisfaction.InsistenceName.ToString(), CurrentAction->InsistenceSatisfaction.SatisfactionValue);
 }
 
 UUtilityActionBase* UMyUtilityAIComponent::GetCurrentAction()
@@ -119,7 +126,7 @@ void UMyUtilityAIComponent::GetInsistenceByName(const FName name, FInsistence& i
 	success = false;
 }
 
-void UMyUtilityAIComponent::GetInsistenceValueByName(const FName name, int32& insistenceValue, bool& success)
+void UMyUtilityAIComponent::GetInsistenceValueByName(const FName name, float& insistenceValue, bool& success)
 {
 	for (auto& currentInsistence : Insistences)
 	{
@@ -135,7 +142,7 @@ void UMyUtilityAIComponent::GetInsistenceValueByName(const FName name, int32& in
 	success = false;
 }
 
-void UMyUtilityAIComponent::SetInsistenceValueByName(const FName name, int32 insistenceValue, int32& newInsistenceValue, bool& success)
+void UMyUtilityAIComponent::SetInsistenceValueByName(const FName name, float insistenceValue, float& newInsistenceValue, bool& success)
 {
 	for (auto& currentInsistence : Insistences)
 	{
