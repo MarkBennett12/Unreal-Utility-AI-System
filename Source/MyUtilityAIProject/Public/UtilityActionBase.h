@@ -42,4 +42,7 @@ public:
 	void OnTick(float DeltaTime);
 
 	void Tick(float DeltaTime);
+
+	// Need this so we can access the UE4 gameplay framework in the action Blueprints
+	virtual class UWorld* GetWorld() const override;
 };
