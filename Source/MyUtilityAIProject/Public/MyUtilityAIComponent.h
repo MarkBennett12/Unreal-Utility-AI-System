@@ -16,8 +16,12 @@ struct FInsistence
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = EditorCategory)
 	FName Name = "";
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = EditorCategory)
-		float Value = 0;
+	float Value = 0;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = EditorCategory)
+	UCurveFloat* InsistenceCurve;
 };
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -40,7 +44,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = EditorCategory, meta = (ExposeOnSpawn = "true"))
 	TSet<TSubclassOf<UUtilityActionBase>> ActionClasses;
 
-	// the pointers to the actual instances, though so far only getting the default class
+	// the pointers to the actual instances
 	UPROPERTY()
 	TArray<UUtilityActionBase*> ActionInstances;
 
