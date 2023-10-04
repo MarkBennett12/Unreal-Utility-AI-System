@@ -3,13 +3,15 @@
 
 #include "UtilityActionBase.h"
 
-void UUtilityActionBase::InitAction()
+UUtilityActionBase::UUtilityActionBase()
 {
-	ActionName = "";
+	//InsistenceSatisfaction = CreateDefaultSubobject<UInsistenceSatisfaction>(TEXT("Insistence Satisfaction"));
+}
 
-	InsistenceSatisfaction = FInsistenceSatisfaction();
-	InsistenceSatisfaction.InsistenceName = "";
-	InsistenceSatisfaction.SatisfactionValue = 0;
+void UUtilityActionBase::Init()
+{
+	UE_LOG(LogTemp, Display, TEXT("UUtilityActionBase Init called"));
+	InsistenceSatisfaction = NewObject<UInsistenceSatisfaction>(this, InsistenceSatisfactionClass);
 }
 
 void UUtilityActionBase::Tick(float DeltaTime)

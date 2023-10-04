@@ -28,6 +28,7 @@ void UMyUtilityAIComponent::BeginPlay()
 
 		if (newAction)
 		{	
+			newAction->Init();
 			ActionInstances.Add(newAction);
 		}
 		else
@@ -52,7 +53,7 @@ void UMyUtilityAIComponent::TickComponent(float DeltaTime, ELevelTick TickType, 
 	UpdateBestAction();
 
 	// carry out the selected action
-	UE_LOG(LogTemp, Display, TEXT("Tick, current action is %s and satisfies insistence %s by %f"), *CurrentAction->ActionName.ToString(), *CurrentAction->InsistenceSatisfaction.InsistenceName.ToString(), CurrentAction->InsistenceSatisfaction.SatisfactionValue);
+	UE_LOG(LogTemp, Display, TEXT("Tick, current action is %s and satisfies insistence %s by %f"), *CurrentAction->ActionName.ToString(), *CurrentAction->InsistenceSatisfaction->InsistenceName.ToString(), CurrentAction->InsistenceSatisfaction->BaseSatisfactionValue);
 	CurrentAction->Tick(DeltaTime);
 }
 
@@ -75,23 +76,23 @@ void UMyUtilityAIComponent::UpdateBestAction()
 	for (auto& action : ActionInstances)
 	{
 		UE_LOG(LogTemp, Display, TEXT("the insistence being satisfied is %s has the final (curve) value %f"), *MaxInsistence.Name.ToString(), MaxInsistence.InsistenceCurve->GetFloatValue(MaxInsistence.Value));
-		UE_LOG(LogTemp, Display, TEXT("the action being considered is %s and satisfies insistence %s with value %f"), *action->ActionName.ToString(), *action->InsistenceSatisfaction.InsistenceName.ToString(), action->InsistenceSatisfaction.SatisfactionValue);
+		UE_LOG(LogTemp, Display, TEXT("the action being considered is %s and satisfies insistence %s with value %f"), *action->ActionName.ToString(), *action->InsistenceSatisfaction->InsistenceName.ToString(), action->InsistenceSatisfaction->BaseSatisfactionValue);
 			
-		// BUG HERE! if the name is right but the new insistance satisfaction is <= current it will never update
-		if (action->InsistenceSatisfaction.InsistenceName == MaxInsistence.Name)
+		// This is an ugly hack to get round the fact that
+		if (action->InsistenceSatisfaction->InsistenceName == MaxInsistence.Name)
 		{
 			CurrentAction = action;
 
-			if (action->InsistenceSatisfaction.SatisfactionValue > CurrentAction->InsistenceSatisfaction.SatisfactionValue)
+			if (action->InsistenceSatisfaction->BaseSatisfactionValue > CurrentAction->InsistenceSatisfaction->BaseSatisfactionValue)
 			{
 				CurrentAction = action;
 			}
 
-			UE_LOG(LogTemp, Display, TEXT("the best action is %s and satisfies insistence %s by %f"), *CurrentAction->ActionName.ToString(), *CurrentAction->InsistenceSatisfaction.InsistenceName.ToString(), CurrentAction->InsistenceSatisfaction.SatisfactionValue);
+			UE_LOG(LogTemp, Display, TEXT("the best action is %s and satisfies insistence %s by %f"), *CurrentAction->ActionName.ToString(), *CurrentAction->InsistenceSatisfaction->InsistenceName.ToString(), CurrentAction->InsistenceSatisfaction->BaseSatisfactionValue);
 		}
 	}
 
-	UE_LOG(LogTemp, Display, TEXT("*********** The --final-- CurrentAction name = %s, insistence name = %s, insistence value = %f"), *CurrentAction->ActionName.ToString(), *CurrentAction->InsistenceSatisfaction.InsistenceName.ToString(), CurrentAction->InsistenceSatisfaction.SatisfactionValue);
+	UE_LOG(LogTemp, Display, TEXT("*********** The --final-- CurrentAction name = %s, insistence name = %s, insistence value = %f"), *CurrentAction->ActionName.ToString(), *CurrentAction->InsistenceSatisfaction->InsistenceName.ToString(), CurrentAction->InsistenceSatisfaction->BaseSatisfactionValue);
 }
 
 UUtilityActionBase* UMyUtilityAIComponent::GetCurrentAction()

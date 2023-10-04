@@ -10,3 +10,14 @@ UInsistenceSatisfaction::UInsistenceSatisfaction()
 UInsistenceSatisfaction::~UInsistenceSatisfaction()
 {
 }
+
+UWorld* UInsistenceSatisfaction::GetWorld() const
+{
+	// We need to do this to force the editor to recognise that GetWorld has been implemented
+	if (HasAllFlags(RF_ClassDefaultObject) || !GetOuter())
+	{
+		return nullptr;
+	}
+
+	return GetOuter()->GetWorld();
+}

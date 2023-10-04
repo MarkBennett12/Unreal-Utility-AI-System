@@ -2,6 +2,8 @@
 
 #pragma once
 
+const FString EditorCategory = "Utility AI";
+
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "UtilityActionBase.h"

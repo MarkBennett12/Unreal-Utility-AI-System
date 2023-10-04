@@ -4,38 +4,28 @@
 
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
+#include "UInsistenceSatisfaction.h"
 #include "UtilityActionBase.generated.h"
-
-const FString EditorCategory = "Utility AI";
-
-// Used to store the insistence values for the utility calculations
-USTRUCT(BlueprintType)
-struct FInsistenceSatisfaction
-{
-	GENERATED_BODY()
-public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = EditorCategory)
-	FName InsistenceName = "";
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = EditorCategory)
-	float SatisfactionValue = 0;
-};
 
 /**
  * 
  */
-UCLASS(BlueprintType, Blueprintable)
+UCLASS(DefaultToInstanced, EditInlineNew)
 class MYUTILITYAIPROJECT_API UUtilityActionBase : public UObject
 {
 	GENERATED_BODY()
 	
 public:
-	void InitAction();
+	UUtilityActionBase();
+
+	void Init();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = EditorCategory)
 	FName ActionName;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = EditorCategory)
-	FInsistenceSatisfaction InsistenceSatisfaction;
+	UPROPERTY(EditDefaultsOnly, Category = EditorCategory)
+	TSubclassOf<UInsistenceSatisfaction> InsistenceSatisfactionClass;
+	UInsistenceSatisfaction* InsistenceSatisfaction;
 
 	// Blueprint event for the user to implement thier action logic
 	UFUNCTION(BlueprintImplementableEvent, Category = EditorCategory)
