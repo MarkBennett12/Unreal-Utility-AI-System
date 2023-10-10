@@ -21,3 +21,13 @@ UWorld* UInsistenceSatisfaction::GetWorld() const
 
 	return GetOuter()->GetWorld();
 }
+
+void UInsistenceSatisfaction::BeginPlay()
+{
+	UE_LOG(LogTemp, Display, TEXT("UInsistenceSatisfaction::BeginPlay called, outer is %s"), *this->GetOuter()->GetName());
+}
+
+float UInsistenceSatisfaction::GetSatisfationValue_Implementation()
+{
+	return BaseSatisfactionValue;
+}

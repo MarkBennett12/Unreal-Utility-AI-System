@@ -18,12 +18,12 @@ class MYUTILITYAIPROJECT_API UUtilityActionBase : public UObject
 public:
 	UUtilityActionBase();
 
-	void Init();
+	void BeginPlay();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = EditorCategory)
 	FName ActionName;
 
-	UPROPERTY(EditDefaultsOnly, Category = EditorCategory)
+	UPROPERTY(EditAnywhere, Category = EditorCategory)
 	TSubclassOf<UInsistenceSatisfaction> InsistenceSatisfactionClass;
 	UInsistenceSatisfaction* InsistenceSatisfaction;
 

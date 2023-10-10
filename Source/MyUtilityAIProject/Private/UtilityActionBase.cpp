@@ -8,10 +8,12 @@ UUtilityActionBase::UUtilityActionBase()
 	//InsistenceSatisfaction = CreateDefaultSubobject<UInsistenceSatisfaction>(TEXT("Insistence Satisfaction"));
 }
 
-void UUtilityActionBase::Init()
+void UUtilityActionBase::BeginPlay()
 {
-	UE_LOG(LogTemp, Display, TEXT("UUtilityActionBase Init called"));
+	UE_LOG(LogTemp, Display, TEXT("UUtilityActionBase BeginPlay called"));
 	InsistenceSatisfaction = NewObject<UInsistenceSatisfaction>(this, InsistenceSatisfactionClass);
+
+	InsistenceSatisfaction->BeginPlay();
 }
 
 void UUtilityActionBase::Tick(float DeltaTime)

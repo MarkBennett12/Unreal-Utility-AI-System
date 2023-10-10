@@ -17,10 +17,6 @@ void UMyUtilityAIComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	//this->get
-
-	//UE_LOG(LogTemp, Display, TEXT("actionclasses size in beginplay = %d"), ActionClasses.Num());
-
 	// instance all the actions
 	for (auto& actionClass : ActionClasses)
 	{
@@ -28,7 +24,7 @@ void UMyUtilityAIComponent::BeginPlay()
 
 		if (newAction)
 		{	
-			newAction->Init();
+			newAction->BeginPlay();
 			ActionInstances.Add(newAction);
 		}
 		else
@@ -76,14 +72,14 @@ void UMyUtilityAIComponent::UpdateBestAction()
 	for (auto& action : ActionInstances)
 	{
 		UE_LOG(LogTemp, Display, TEXT("the insistence being satisfied is %s has the final (curve) value %f"), *MaxInsistence.Name.ToString(), MaxInsistence.InsistenceCurve->GetFloatValue(MaxInsistence.Value));
-		UE_LOG(LogTemp, Display, TEXT("the action being considered is %s and satisfies insistence %s with value %f"), *action->ActionName.ToString(), *action->InsistenceSatisfaction->InsistenceName.ToString(), action->InsistenceSatisfaction->BaseSatisfactionValue);
+		UE_LOG(LogTemp, Display, TEXT("the action being considered is %s and satisfies insistence %s with base value %f and calculated value %f"), *action->ActionName.ToString(), *action->InsistenceSatisfaction->InsistenceName.ToString(), action->InsistenceSatisfaction->BaseSatisfactionValue, action->InsistenceSatisfaction->GetSatisfationValue());
 			
 		// This is an ugly hack to get round the fact that
 		if (action->InsistenceSatisfaction->InsistenceName == MaxInsistence.Name)
 		{
 			CurrentAction = action;
 
-			if (action->InsistenceSatisfaction->BaseSatisfactionValue > CurrentAction->InsistenceSatisfaction->BaseSatisfactionValue)
+			if (action->InsistenceSatisfaction->GetSatisfationValue() > CurrentAction->InsistenceSatisfaction->GetSatisfationValue())
 			{
 				CurrentAction = action;
 			}
@@ -92,7 +88,7 @@ void UMyUtilityAIComponent::UpdateBestAction()
 		}
 	}
 
-	UE_LOG(LogTemp, Display, TEXT("*********** The --final-- CurrentAction name = %s, insistence name = %s, insistence value = %f"), *CurrentAction->ActionName.ToString(), *CurrentAction->InsistenceSatisfaction->InsistenceName.ToString(), CurrentAction->InsistenceSatisfaction->BaseSatisfactionValue);
+	UE_LOG(LogTemp, Display, TEXT("*********** The --final-- CurrentAction name = %s, insistence name = %s, base insistence value = %f, calculated insistence value %f"), *CurrentAction->ActionName.ToString(), *CurrentAction->InsistenceSatisfaction->InsistenceName.ToString(), CurrentAction->InsistenceSatisfaction->BaseSatisfactionValue, CurrentAction->InsistenceSatisfaction->GetSatisfationValue());
 }
 
 UUtilityActionBase* UMyUtilityAIComponent::GetCurrentAction()
