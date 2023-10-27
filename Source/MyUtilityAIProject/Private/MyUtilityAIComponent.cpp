@@ -36,6 +36,7 @@ void UMyUtilityAIComponent::BeginPlay()
 	// initialse the max instance and action
 	MaxInsistence = Insistences[0];
 	CurrentAction = ActionInstances[0];
+
 	UpdateBestAction();
 }
 
@@ -74,12 +75,16 @@ void UMyUtilityAIComponent::UpdateBestAction()
 		check(action->IsValidLowLevel());
 		check(action->InsistenceSatisfaction->IsValidLowLevel());
 
-		UE_LOG(LogTemp, Display, TEXT("the insistence being satisfied is %s has the final (curve) value %f"), *MaxInsistence.Name.ToString(), MaxInsistence.InsistenceCurve->GetFloatValue(MaxInsistence.Value));
+		//UE_LOG(LogTemp, Display, TEXT("the insistence being satisfied is %s has the final (curve) value %f"), *MaxInsistence.Name.ToString(), MaxInsistence.InsistenceCurve->GetFloatValue(MaxInsistence.Value));
 
 		UE_LOG(LogTemp, Display, TEXT("the action being considered is %s"), *action->ActionName.ToString());
 		UE_LOG(LogTemp, Display, TEXT("satisfies insistence %s with base value %f and calculated value %f"), *action->InsistenceSatisfaction->InsistenceName.ToString());
 		UE_LOG(LogTemp, Display, TEXT("base value %f"), action->InsistenceSatisfaction->BaseSatisfactionValue);
 		UE_LOG(LogTemp, Display, TEXT("calculated value %f"), action->InsistenceSatisfaction->GetSatisfationValue());
+
+
+		//UE_LOG(LogTemp, Display, TEXT("calculated value %f"), action->InsistenceSatisfaction->GetFlags());
+
 
 		// This is an ugly hack to get round the fact that
 		if (action->InsistenceSatisfaction->InsistenceName == MaxInsistence.Name)
