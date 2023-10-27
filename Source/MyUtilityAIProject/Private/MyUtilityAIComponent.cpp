@@ -49,7 +49,7 @@ void UMyUtilityAIComponent::TickComponent(float DeltaTime, ELevelTick TickType, 
 	UpdateBestAction();
 
 	// carry out the selected action
-	UE_LOG(LogTemp, Display, TEXT("Tick, current action is %s and satisfies insistence %s by %f"), *CurrentAction->ActionName.ToString(), *CurrentAction->InsistenceSatisfaction->InsistenceName.ToString(), CurrentAction->InsistenceSatisfaction->BaseSatisfactionValue);
+	UE_LOG(LogTemp, Display, TEXT("Tick, current action is %s and satisfies insistence %s by %f"), *CurrentAction->ActionName.ToString(), *CurrentAction->InsistenceSatisfaction->InsistenceName.ToString(), CurrentAction->InsistenceSatisfaction->GetSatisfationValue());
 	CurrentAction->Tick(DeltaTime);
 }
 
@@ -68,12 +68,19 @@ void UMyUtilityAIComponent::UpdateBestAction()
 	}
 	UE_LOG(LogTemp, Display, TEXT("***** MaxInsistence %s with value %f, curve value %f"), *MaxInsistence.Name.ToString(), MaxInsistence.Value, MaxInsistence.InsistenceCurve->GetFloatValue(MaxInsistence.Value));
 
-	// GEt the action that satisfies the highest insistence
+	// Get the action that satisfies the highest insistence
 	for (auto& action : ActionInstances)
 	{
+		check(action->IsValidLowLevel());
+		check(action->InsistenceSatisfaction->IsValidLowLevel());
+
 		UE_LOG(LogTemp, Display, TEXT("the insistence being satisfied is %s has the final (curve) value %f"), *MaxInsistence.Name.ToString(), MaxInsistence.InsistenceCurve->GetFloatValue(MaxInsistence.Value));
-		UE_LOG(LogTemp, Display, TEXT("the action being considered is %s and satisfies insistence %s with base value %f and calculated value %f"), *action->ActionName.ToString(), *action->InsistenceSatisfaction->InsistenceName.ToString(), action->InsistenceSatisfaction->BaseSatisfactionValue, action->InsistenceSatisfaction->GetSatisfationValue());
-			
+
+		UE_LOG(LogTemp, Display, TEXT("the action being considered is %s"), *action->ActionName.ToString());
+		UE_LOG(LogTemp, Display, TEXT("satisfies insistence %s with base value %f and calculated value %f"), *action->InsistenceSatisfaction->InsistenceName.ToString());
+		UE_LOG(LogTemp, Display, TEXT("base value %f"), action->InsistenceSatisfaction->BaseSatisfactionValue);
+		UE_LOG(LogTemp, Display, TEXT("calculated value %f"), action->InsistenceSatisfaction->GetSatisfationValue());
+
 		// This is an ugly hack to get round the fact that
 		if (action->InsistenceSatisfaction->InsistenceName == MaxInsistence.Name)
 		{
