@@ -50,7 +50,7 @@ void UMyUtilityAIComponent::TickComponent(float DeltaTime, ELevelTick TickType, 
 	UpdateBestAction();
 
 	// carry out the selected action
-	UE_LOG(LogTemp, Display, TEXT("Tick, current action is %s and satisfies insistence %s by %f"), *CurrentAction->ActionName.ToString(), *CurrentAction->InsistenceSatisfaction->InsistenceName.ToString(), CurrentAction->InsistenceSatisfaction->GetSatisfationValue());
+	//UE_LOG(LogTemp, Display, TEXT("Tick, current action is %s and satisfies insistence %s by %f"), *CurrentAction->ActionName.ToString(), *CurrentAction->InsistenceSatisfaction->InsistenceName.ToString(), CurrentAction->InsistenceSatisfaction->GetSatisfationValue());
 	CurrentAction->Tick(DeltaTime);
 }
 
@@ -59,7 +59,7 @@ void UMyUtilityAIComponent::UpdateBestAction()
 	// get the highest insistence
 	for (auto& currentInsistence : Insistences)
 	{
-		UE_LOG(LogTemp, Display, TEXT("currentInsistence name %s, value %f, curve value %f"), *currentInsistence.Name.ToString(), currentInsistence.Value, currentInsistence.InsistenceCurve->GetFloatValue(currentInsistence.Value));
+		//UE_LOG(LogTemp, Display, TEXT("currentInsistence name %s, value %f, curve value %f"), *currentInsistence.Name.ToString(), currentInsistence.Value, currentInsistence.InsistenceCurve->GetFloatValue(currentInsistence.Value));
 
 		// Use the curve value to test for max insistence value
 		if (currentInsistence.InsistenceCurve->GetFloatValue(currentInsistence.Value) > MaxInsistence.InsistenceCurve->GetFloatValue(MaxInsistence.Value))
@@ -67,20 +67,20 @@ void UMyUtilityAIComponent::UpdateBestAction()
 			MaxInsistence = currentInsistence;
 		}
 	}
-	UE_LOG(LogTemp, Display, TEXT("***** MaxInsistence %s with value %f, curve value %f"), *MaxInsistence.Name.ToString(), MaxInsistence.Value, MaxInsistence.InsistenceCurve->GetFloatValue(MaxInsistence.Value));
+	//UE_LOG(LogTemp, Display, TEXT("***** MaxInsistence %s with value %f, curve value %f"), *MaxInsistence.Name.ToString(), MaxInsistence.Value, MaxInsistence.InsistenceCurve->GetFloatValue(MaxInsistence.Value));
 
 	// Get the action that satisfies the highest insistence
 	for (auto& action : ActionInstances)
 	{
-		check(action->IsValidLowLevel());
-		check(action->InsistenceSatisfaction->IsValidLowLevel());
+		//check(action->IsValidLowLevel());
+		//check(action->InsistenceSatisfaction->IsValidLowLevel());
 
 		//UE_LOG(LogTemp, Display, TEXT("the insistence being satisfied is %s has the final (curve) value %f"), *MaxInsistence.Name.ToString(), MaxInsistence.InsistenceCurve->GetFloatValue(MaxInsistence.Value));
 
-		UE_LOG(LogTemp, Display, TEXT("the action being considered is %s"), *action->ActionName.ToString());
-		UE_LOG(LogTemp, Display, TEXT("satisfies insistence %s with base value %f and calculated value %f"), *action->InsistenceSatisfaction->InsistenceName.ToString());
-		UE_LOG(LogTemp, Display, TEXT("base value %f"), action->InsistenceSatisfaction->BaseSatisfactionValue);
-		UE_LOG(LogTemp, Display, TEXT("calculated value %f"), action->InsistenceSatisfaction->GetSatisfationValue());
+		//UE_LOG(LogTemp, Display, TEXT("the action being considered is %s"), *action->ActionName.ToString());
+		//UE_LOG(LogTemp, Display, TEXT("satisfies insistence %s with base value %f and calculated value %f"), *action->InsistenceSatisfaction->InsistenceName.ToString());
+		//UE_LOG(LogTemp, Display, TEXT("base value %f"), action->InsistenceSatisfaction->BaseSatisfactionValue);
+		//UE_LOG(LogTemp, Display, TEXT("calculated value %f"), action->InsistenceSatisfaction->GetSatisfationValue());
 
 
 		//UE_LOG(LogTemp, Display, TEXT("calculated value %f"), action->InsistenceSatisfaction->GetFlags());
@@ -96,11 +96,11 @@ void UMyUtilityAIComponent::UpdateBestAction()
 				CurrentAction = action;
 			}
 
-			UE_LOG(LogTemp, Display, TEXT("the best action is %s and satisfies insistence %s by %f"), *CurrentAction->ActionName.ToString(), *CurrentAction->InsistenceSatisfaction->InsistenceName.ToString(), CurrentAction->InsistenceSatisfaction->BaseSatisfactionValue);
+			//UE_LOG(LogTemp, Display, TEXT("the best action is %s and satisfies insistence %s by %f"), *CurrentAction->ActionName.ToString(), *CurrentAction->InsistenceSatisfaction->InsistenceName.ToString(), CurrentAction->InsistenceSatisfaction->BaseSatisfactionValue);
 		}
 	}
 
-	UE_LOG(LogTemp, Display, TEXT("*********** The --final-- CurrentAction name = %s, insistence name = %s, base insistence value = %f, calculated insistence value %f"), *CurrentAction->ActionName.ToString(), *CurrentAction->InsistenceSatisfaction->InsistenceName.ToString(), CurrentAction->InsistenceSatisfaction->BaseSatisfactionValue, CurrentAction->InsistenceSatisfaction->GetSatisfationValue());
+	//UE_LOG(LogTemp, Display, TEXT("*********** The --final-- CurrentAction name = %s, insistence name = %s, base insistence value = %f, calculated insistence value %f"), *CurrentAction->ActionName.ToString(), *CurrentAction->InsistenceSatisfaction->InsistenceName.ToString(), CurrentAction->InsistenceSatisfaction->BaseSatisfactionValue, CurrentAction->InsistenceSatisfaction->GetSatisfationValue());
 }
 
 UUtilityActionBase* UMyUtilityAIComponent::GetCurrentAction()

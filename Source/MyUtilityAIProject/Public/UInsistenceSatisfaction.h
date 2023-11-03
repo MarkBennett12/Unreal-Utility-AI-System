@@ -28,5 +28,5 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent, Category = EditorCategory)
 	float GetSatisfationValue();
-	float GetSatisfationValue_Implementation();
+	virtual float GetSatisfationValue_Implementation();
 };
