@@ -10,7 +10,7 @@
 /**
  * 
  */
-UCLASS(DefaultToInstanced, EditInlineNew)
+UCLASS(Blueprintable)
 class MYUTILITYAIPROJECT_API UUtilityActionBase : public UObject
 {
 	GENERATED_BODY()

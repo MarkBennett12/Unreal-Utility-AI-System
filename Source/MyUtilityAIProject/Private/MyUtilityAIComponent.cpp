@@ -77,10 +77,10 @@ void UMyUtilityAIComponent::UpdateBestAction()
 
 		//UE_LOG(LogTemp, Display, TEXT("the insistence being satisfied is %s has the final (curve) value %f"), *MaxInsistence.Name.ToString(), MaxInsistence.InsistenceCurve->GetFloatValue(MaxInsistence.Value));
 
-		//UE_LOG(LogTemp, Display, TEXT("the action being considered is %s"), *action->ActionName.ToString());
-		//UE_LOG(LogTemp, Display, TEXT("satisfies insistence %s with base value %f and calculated value %f"), *action->InsistenceSatisfaction->InsistenceName.ToString());
-		//UE_LOG(LogTemp, Display, TEXT("base value %f"), action->InsistenceSatisfaction->BaseSatisfactionValue);
-		//UE_LOG(LogTemp, Display, TEXT("calculated value %f"), action->InsistenceSatisfaction->GetSatisfationValue());
+		UE_LOG(LogTemp, Display, TEXT("the action being considered is %s"), *action->ActionName.ToString());
+		UE_LOG(LogTemp, Display, TEXT("satisfies insistence %s"), *action->InsistenceSatisfaction->InsistenceName.ToString());
+		UE_LOG(LogTemp, Display, TEXT("base value %f"), action->InsistenceSatisfaction->BaseSatisfactionValue);
+		UE_LOG(LogTemp, Display, TEXT("calculated value %f"), action->InsistenceSatisfaction->GetSatisfationValue());
 
 
 		//UE_LOG(LogTemp, Display, TEXT("calculated value %f"), action->InsistenceSatisfaction->GetFlags());

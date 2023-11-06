@@ -10,18 +10,18 @@ UUtilityActionBase::UUtilityActionBase()
 
 void UUtilityActionBase::BeginPlay()
 {
-	UE_LOG(LogTemp, Display, TEXT("UUtilityActionBase BeginPlay called"));
+	//UE_LOG(LogTemp, Display, TEXT("UUtilityActionBase BeginPlay called"));
 	InsistenceSatisfaction = NewObject<UInsistenceSatisfaction>(this, InsistenceSatisfactionClass);
 
 	InsistenceSatisfaction->BeginPlay();
-	UE_LOG(LogTemp, Display, TEXT("InsistenceSatisfaction UObject Name = %s"), *InsistenceSatisfaction->GetName());
+	//UE_LOG(LogTemp, Display, TEXT("InsistenceSatisfaction UObject Name = %s"), *InsistenceSatisfaction->GetName());
 }
 
 void UUtilityActionBase::Tick(float DeltaTime)
 {
 	
 	//UE_LOG(LogTemp, Display, TEXT("action tick, current world is %s, outer is %s"), *this->GetWorld()->GetName(), *this->GetOuter()->GetName());
-	UE_LOG(LogTemp, Display, TEXT("action tick, InsistenceSatisfaction UObject Name = %s"), *InsistenceSatisfaction->GetName());
+	//UE_LOG(LogTemp, Display, TEXT("action tick, InsistenceSatisfaction UObject Name = %s"), *InsistenceSatisfaction->GetName());
 	OnTick(DeltaTime);
 }
 
