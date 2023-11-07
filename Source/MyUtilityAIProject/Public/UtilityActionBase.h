@@ -25,6 +25,7 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = EditorCategory)
 	TSubclassOf<UInsistenceSatisfaction> InsistenceSatisfactionClass;
+	UPROPERTY()
 	UInsistenceSatisfaction* InsistenceSatisfaction;
 
 	// Blueprint event for the user to implement thier action logic
