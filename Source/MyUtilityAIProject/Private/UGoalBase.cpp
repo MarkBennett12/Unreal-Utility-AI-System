@@ -7,6 +7,12 @@ UGoalBase::UGoalBase()
 {
 }
 
-UGoalBase::~UGoalBase()
+float UGoalBase::GetInsistence_Implementation()
 {
+	return Insistence;
+}
+
+float UGoalBase::GetFinalInsistence()
+{
+	return InsistenceCurve->GetFloatValue(GetInsistence());
 }

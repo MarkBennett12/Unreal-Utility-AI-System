@@ -17,6 +17,7 @@ void UUtilityActionBase::BeginPlay()
 	//UE_LOG(LogTemp, Display, TEXT("InsistenceSatisfaction UObject Name = %s"), *InsistenceSatisfaction->GetName());
 }
 
+// TODO ******** what happens when a tickable object is none??????
 void UUtilityActionBase::Tick(float DeltaTime)
 {
 	

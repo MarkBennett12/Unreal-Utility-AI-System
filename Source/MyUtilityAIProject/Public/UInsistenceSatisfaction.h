@@ -8,7 +8,7 @@
 /**
  * 
  */
-UCLASS(Blueprintable)
+UCLASS(Blueprintable, Abstract)
 class MYUTILITYAIPROJECT_API UInsistenceSatisfaction : public UObject
 {
 	GENERATED_BODY()

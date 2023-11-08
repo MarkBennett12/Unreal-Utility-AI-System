@@ -17,6 +17,21 @@ void UMyUtilityAIComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
+	// instance all the goals
+	for (auto& goalClass : GoalClasses)
+	{
+		UGoalBase* newGoal = NewObject<UGoalBase>(this, goalClass);
+
+		if (newGoal)
+		{
+			GoalInstances.Add(newGoal);
+		}
+		else
+		{
+			UE_LOG(LogTemp, Display, TEXT("Goal invalid"));
+		}
+	}
+
 	// instance all the actions
 	for (auto& actionClass : ActionClasses)
 	{
@@ -34,8 +49,15 @@ void UMyUtilityAIComponent::BeginPlay()
 	}
 
 	// initialse the max instance and action
-	MaxInsistence = Insistences[0];
-	CurrentAction = ActionInstances[0];
+	if (GoalInstances.Num() > 0)
+	{
+		MaxGoal = GoalInstances[0];
+	}
+
+	if (ActionInstances.Num() > 0)
+	{
+		CurrentAction = ActionInstances[0];
+	}
 
 	UpdateBestAction();
 }
@@ -57,32 +79,32 @@ void UMyUtilityAIComponent::TickComponent(float DeltaTime, ELevelTick TickType, 
 void UMyUtilityAIComponent::UpdateBestAction()
 {
 	// get the highest insistence
-	for (auto& currentInsistence : Insistences)
+	for (auto currentGoal : GoalInstances)
 	{
-		//UE_LOG(LogTemp, Display, TEXT("currentInsistence name %s, value %f, curve value %f"), *currentInsistence.Name.ToString(), currentInsistence.Value, currentInsistence.InsistenceCurve->GetFloatValue(currentInsistence.Value));
+		UE_LOG(LogTemp, Display, TEXT("currentGoal name %s, value %f"), *currentGoal->Name.ToString(), currentGoal->GetFinalInsistence());
 
 		// Use the curve value to test for max insistence value
-		if (currentInsistence.InsistenceCurve->GetFloatValue(currentInsistence.Value) > MaxInsistence.InsistenceCurve->GetFloatValue(MaxInsistence.Value))
+		if (currentGoal->GetFinalInsistence() > MaxGoal->GetFinalInsistence())
 		{
-			MaxInsistence = currentInsistence;
+			MaxGoal = currentGoal;
 		}
 	}
-	//UE_LOG(LogTemp, Display, TEXT("***** MaxInsistence %s with value %f, curve value %f"), *MaxInsistence.Name.ToString(), MaxInsistence.Value, MaxInsistence.InsistenceCurve->GetFloatValue(MaxInsistence.Value));
+	//UE_LOG(LogTemp, Display, TEXT("***** MaxGoal %s with value %f, curve value %f"), *MaxGoal.Name.ToString(), MaxGoal.Value, MaxGoal.InsistenceCurve->GetFloatValue(MaxGoal.Value));
 
 	// Get the action that satisfies the highest insistence
 	for (auto& action : ActionInstances)
 	{
-		//UE_LOG(LogTemp, Display, TEXT("the insistence being satisfied is %s has the final (curve) value %f"), *MaxInsistence.Name.ToString(), MaxInsistence.InsistenceCurve->GetFloatValue(MaxInsistence.Value));
+		//UE_LOG(LogTemp, Display, TEXT("the insistence being satisfied is %s has the final (curve) value %f"), *MaxGoal.Name.ToString(), MaxGoal.InsistenceCurve->GetFloatValue(MaxGoal.Value));
 
-		UE_LOG(LogTemp, Display, TEXT("the action being considered is %s"), *action->ActionName.ToString());
-		UE_LOG(LogTemp, Display, TEXT("satisfies insistence %s"), *action->InsistenceSatisfaction->InsistenceName.ToString());
-		UE_LOG(LogTemp, Display, TEXT("base value %f"), action->InsistenceSatisfaction->BaseSatisfactionValue);
-		UE_LOG(LogTemp, Display, TEXT("calculated value %f"), action->InsistenceSatisfaction->GetSatisfationValue());
+		//UE_LOG(LogTemp, Display, TEXT("the action being considered is %s"), *action->ActionName.ToString());
+		//UE_LOG(LogTemp, Display, TEXT("satisfies insistence %s"), *action->InsistenceSatisfaction->InsistenceName.ToString());
+		//UE_LOG(LogTemp, Display, TEXT("base value %f"), action->InsistenceSatisfaction->BaseSatisfactionValue);
+		//UE_LOG(LogTemp, Display, TEXT("calculated value %f"), action->InsistenceSatisfaction->GetSatisfationValue());
 
 
 		//UE_LOG(LogTemp, Display, TEXT("calculated value %f"), action->InsistenceSatisfaction->GetFlags());
 
-		if (action->InsistenceSatisfaction->InsistenceName == MaxInsistence.Name)
+		if (action->InsistenceSatisfaction->InsistenceName == MaxGoal->Name)
 		{
 			CurrentAction = action;
 
@@ -103,11 +125,11 @@ UUtilityActionBase* UMyUtilityAIComponent::GetCurrentAction()
 	return CurrentAction;
 }
 
-void UMyUtilityAIComponent::GetInsistenceByName(const FName name, FInsistence& insistence, bool& success)
+void UMyUtilityAIComponent::GetGoalByName(const FName name, UGoalBase* insistence, bool& success)
 {
-	for (auto& currentInsistence : Insistences)
+	for (auto currentInsistence : GoalInstances)
 	{
-		if (currentInsistence.Name == name)
+		if (currentInsistence->Name == name)
 		{
 			insistence = currentInsistence;
 			success = true;
@@ -118,30 +140,30 @@ void UMyUtilityAIComponent::GetInsistenceByName(const FName name, FInsistence& i
 	success = false;
 }
 
-void UMyUtilityAIComponent::GetInsistenceValueByName(const FName name, float& insistenceValue, bool& success)
+void UMyUtilityAIComponent::GetGoalInsistenceByName(const FName name, float& insistenceValue, bool& success)
 {
-	for (auto& currentInsistence : Insistences)
+	for (auto& currentGoal : GoalInstances)
 	{
-		if (currentInsistence.Name == name)
+		if (currentGoal->Name == name)
 		{
-			insistenceValue = currentInsistence.Value;
+			insistenceValue = currentGoal->GetInsistence();
 			success = true;
 			return;
 		}
 	}
 
-	insistenceValue = -1;
+	insistenceValue = 0;
 	success = false;
 }
 
-void UMyUtilityAIComponent::SetInsistenceValueByName(const FName name, float insistenceValue, float& newInsistenceValue, bool& success)
+void UMyUtilityAIComponent::SetGoalInsistenceByName(const FName name, float insistenceValue, float& newInsistenceValue, bool& success)
 {
-	for (auto& currentInsistence : Insistences)
+	for (auto currentGoal : GoalInstances)
 	{
-		if (currentInsistence.Name == name)
+		if (currentGoal->Name == name)
 		{
-			currentInsistence.Value = insistenceValue;
-			newInsistenceValue = currentInsistence.Value;
+			currentGoal->Insistence = insistenceValue;
+			newInsistenceValue = currentGoal->GetInsistence();
 
 			success = true;
 			return;
@@ -151,11 +173,11 @@ void UMyUtilityAIComponent::SetInsistenceValueByName(const FName name, float ins
 	success = false;
 }
 
-bool UMyUtilityAIComponent::HasInsistance(const FName name)
+bool UMyUtilityAIComponent::HasGoal(const FName name)
 {
-	for (auto& currentInsistence : Insistences)
+	for (auto& currentGoal : GoalInstances)
 	{
-		if (currentInsistence.Name == name)
+		if (currentGoal->Name == name)
 		{
 			return true;
 		}
