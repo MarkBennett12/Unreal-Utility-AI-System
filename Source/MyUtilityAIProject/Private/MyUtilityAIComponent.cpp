@@ -72,9 +72,6 @@ void UMyUtilityAIComponent::UpdateBestAction()
 	// Get the action that satisfies the highest insistence
 	for (auto& action : ActionInstances)
 	{
-		//check(action->IsValidLowLevel());
-		//check(action->InsistenceSatisfaction->IsValidLowLevel());
-
 		//UE_LOG(LogTemp, Display, TEXT("the insistence being satisfied is %s has the final (curve) value %f"), *MaxInsistence.Name.ToString(), MaxInsistence.InsistenceCurve->GetFloatValue(MaxInsistence.Value));
 
 		UE_LOG(LogTemp, Display, TEXT("the action being considered is %s"), *action->ActionName.ToString());
@@ -85,8 +82,6 @@ void UMyUtilityAIComponent::UpdateBestAction()
 
 		//UE_LOG(LogTemp, Display, TEXT("calculated value %f"), action->InsistenceSatisfaction->GetFlags());
 
-
-		// This is an ugly hack to get round the fact that
 		if (action->InsistenceSatisfaction->InsistenceName == MaxInsistence.Name)
 		{
 			CurrentAction = action;

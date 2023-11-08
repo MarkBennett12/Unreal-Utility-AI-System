@@ -45,7 +45,6 @@ public:
 	// I'm hoping to find a better way to do this, maybe editor only
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = EditorCategory, meta = (ExposeOnSpawn = "true"))
 	TSet<TSubclassOf<UUtilityActionBase>> ActionClasses;
-
 	// the pointers to the actual instances
 	UPROPERTY()
 	TArray<UUtilityActionBase*> ActionInstances;
