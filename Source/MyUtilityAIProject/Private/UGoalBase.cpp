@@ -7,12 +7,12 @@ UGoalBase::UGoalBase()
 {
 }
 
-float UGoalBase::GetInsistence_Implementation()
+float UGoalBase::GetInsistence_Implementation(const APawn* OwningPawn, const AController* OwningController)
 {
 	return Insistence;
 }
 
-float UGoalBase::GetFinalInsistence()
+float UGoalBase::GetFinalInsistence(const AController* OwningController)
 {
-	return InsistenceCurve->GetFloatValue(GetInsistence());
+	return InsistenceCurve->GetFloatValue(GetInsistence(OwningController->GetPawn(), OwningController));
 }

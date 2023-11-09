@@ -81,10 +81,10 @@ void UMyUtilityAIComponent::UpdateBestAction()
 	// get the highest insistence
 	for (auto currentGoal : GoalInstances)
 	{
-		UE_LOG(LogTemp, Display, TEXT("currentGoal name %s, value %f"), *currentGoal->Name.ToString(), currentGoal->GetFinalInsistence());
+		UE_LOG(LogTemp, Display, TEXT("currentGoal name %s, value %f"), *currentGoal->Name.ToString(), currentGoal->GetFinalInsistence(Cast<AController>(GetOwner())));
 
 		// Use the curve value to test for max insistence value
-		if (currentGoal->GetFinalInsistence() > MaxGoal->GetFinalInsistence())
+		if (currentGoal->GetFinalInsistence(Cast<AController>(GetOwner())) > MaxGoal->GetFinalInsistence(Cast<AController>(GetOwner())))
 		{
 			MaxGoal = currentGoal;
 		}
@@ -146,7 +146,7 @@ void UMyUtilityAIComponent::GetGoalInsistenceByName(const FName name, float& ins
 	{
 		if (currentGoal->Name == name)
 		{
-			insistenceValue = currentGoal->GetInsistence();
+			insistenceValue = currentGoal->GetFinalInsistence(Cast<AController>(GetOwner()));
 			success = true;
 			return;
 		}
@@ -163,7 +163,7 @@ void UMyUtilityAIComponent::SetGoalInsistenceByName(const FName name, float insi
 		if (currentGoal->Name == name)
 		{
 			currentGoal->Insistence = insistenceValue;
-			newInsistenceValue = currentGoal->GetInsistence();
+			newInsistenceValue = currentGoal->GetFinalInsistence(Cast<AController>(GetOwner()));
 
 			success = true;
 			return;

@@ -26,8 +26,8 @@ public:
 	UCurveFloat* InsistenceCurve = nullptr;
 
 	UFUNCTION(BlueprintNativeEvent, Category = EditorCategory)
-	float GetInsistence();
-	virtual float GetInsistence_Implementation();
+	float GetInsistence(const APawn* OwningPawn, const AController* OwningController);
+	virtual float GetInsistence_Implementation(const APawn* OwningPawn, const AController* OwningController);
 
-	float GetFinalInsistence();
+	float GetFinalInsistence(const AController* OwningController);
 };
