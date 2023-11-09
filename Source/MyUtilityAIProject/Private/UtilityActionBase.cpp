@@ -5,16 +5,22 @@
 
 UUtilityActionBase::UUtilityActionBase()
 {
-	//InsistenceSatisfaction = CreateDefaultSubobject<UInsistenceSatisfaction>(TEXT("Insistence Satisfaction"));
+	//UtilityInstance = CreateDefaultSubobject<UUtilityBase>(TEXT("Insistence Satisfaction"));
 }
 
 void UUtilityActionBase::BeginPlay()
 {
 	//UE_LOG(LogTemp, Display, TEXT("UUtilityActionBase BeginPlay called"));
-	InsistenceSatisfaction = NewObject<UInsistenceSatisfaction>(this, InsistenceSatisfactionClass);
+	if (UtilityClass)
+	{
+		UtilityInstance = NewObject<UUtilityBase>(this, UtilityClass);
+	}
 
-	InsistenceSatisfaction->BeginPlay();
-	//UE_LOG(LogTemp, Display, TEXT("InsistenceSatisfaction UObject Name = %s"), *InsistenceSatisfaction->GetName());
+	if (UtilityInstance)
+	{
+		UtilityInstance->BeginPlay();
+		//UE_LOG(LogTemp, Display, TEXT("UtilityInstance UObject Name = %s"), *UtilityInstance->GetName());
+	}
 }
 
 // TODO ******** what happens when a tickable object is none??????
@@ -22,7 +28,7 @@ void UUtilityActionBase::Tick(float DeltaTime)
 {
 	
 	//UE_LOG(LogTemp, Display, TEXT("action tick, current world is %s, outer is %s"), *this->GetWorld()->GetName(), *this->GetOuter()->GetName());
-	//UE_LOG(LogTemp, Display, TEXT("action tick, InsistenceSatisfaction UObject Name = %s"), *InsistenceSatisfaction->GetName());
+	//UE_LOG(LogTemp, Display, TEXT("action tick, UtilityInstance UObject Name = %s"), *UtilityInstance->GetName());
 	OnTick(DeltaTime);
 }
 

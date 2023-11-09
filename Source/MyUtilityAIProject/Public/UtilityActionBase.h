@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
-#include "UInsistenceSatisfaction.h"
+#include "UUtilityBase.h"
 #include "UtilityActionBase.generated.h"
 
 /**
@@ -21,12 +21,12 @@ public:
 	void BeginPlay();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = EditorCategory)
-	FName ActionName;
+	FName ActionName = "";
 
 	UPROPERTY(EditAnywhere, Category = EditorCategory)
-	TSubclassOf<UInsistenceSatisfaction> InsistenceSatisfactionClass;
+	TSubclassOf<UUtilityBase> UtilityClass;
 	UPROPERTY()
-	UInsistenceSatisfaction* InsistenceSatisfaction;
+	UUtilityBase* UtilityInstance = nullptr;
 
 	// Blueprint event for the user to implement thier action logic
 	UFUNCTION(BlueprintImplementableEvent, Category = EditorCategory)

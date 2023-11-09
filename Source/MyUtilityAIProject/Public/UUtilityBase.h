@@ -4,22 +4,22 @@
 
 #include "CoreMinimal.h"
 
-#include "UInsistenceSatisfaction.generated.h"
+#include "UUtilityBase.generated.h"
 /**
  * 
  */
 UCLASS(Blueprintable, Abstract)
-class MYUTILITYAIPROJECT_API UInsistenceSatisfaction : public UObject
+class MYUTILITYAIPROJECT_API UUtilityBase : public UObject
 {
 	GENERATED_BODY()
 public:
-	UInsistenceSatisfaction();
-	~UInsistenceSatisfaction();
+	UUtilityBase();
+	~UUtilityBase();
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = EditorCategory)
-	FName InsistenceName = "";
+	FName UtilityName = "";
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = EditorCategory)
-	float BaseSatisfactionValue = 0;
+	float BaseUtility = 0;
 
 	// Need this so we can access the UE4 gameplay framework in the action Blueprints
 	virtual class UWorld* GetWorld() const override;
@@ -27,6 +27,6 @@ public:
 	void BeginPlay();
 
 	UFUNCTION(BlueprintNativeEvent, Category = EditorCategory)
-	float GetSatisfationValue();
-	virtual float GetSatisfationValue_Implementation();
+	float GetUtilityValue();
+	virtual float GetUtilityValue_Implementation();
 };

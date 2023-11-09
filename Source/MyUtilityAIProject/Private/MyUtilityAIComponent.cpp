@@ -72,7 +72,7 @@ void UMyUtilityAIComponent::TickComponent(float DeltaTime, ELevelTick TickType, 
 	UpdateBestAction();
 
 	// carry out the selected action
-	//UE_LOG(LogTemp, Display, TEXT("Tick, current action is %s and satisfies insistence %s by %f"), *CurrentAction->ActionName.ToString(), *CurrentAction->InsistenceSatisfaction->InsistenceName.ToString(), CurrentAction->InsistenceSatisfaction->GetSatisfationValue());
+	//UE_LOG(LogTemp, Display, TEXT("Tick, current action is %s and satisfies insistence %s by %f"), *CurrentAction->ActionName.ToString(), *CurrentAction->UtilityInstance->UtilityName.ToString(), CurrentAction->UtilityInstance->GetUtilityValue());
 	CurrentAction->Tick(DeltaTime);
 }
 
@@ -94,30 +94,30 @@ void UMyUtilityAIComponent::UpdateBestAction()
 	// Get the action that satisfies the highest insistence
 	for (auto& action : ActionInstances)
 	{
-		//UE_LOG(LogTemp, Display, TEXT("the insistence being satisfied is %s has the final (curve) value %f"), *MaxGoal.Name.ToString(), MaxGoal.InsistenceCurve->GetFloatValue(MaxGoal.Value));
+		//UE_LOG(LogTemp, Display, TEXT("the goal being satisfied is %s has the final (curve) value %f"), *MaxGoal->Name.ToString(), MaxGoal->GetFinalInsistence());
 
-		//UE_LOG(LogTemp, Display, TEXT("the action being considered is %s"), *action->ActionName.ToString());
-		//UE_LOG(LogTemp, Display, TEXT("satisfies insistence %s"), *action->InsistenceSatisfaction->InsistenceName.ToString());
-		//UE_LOG(LogTemp, Display, TEXT("base value %f"), action->InsistenceSatisfaction->BaseSatisfactionValue);
-		//UE_LOG(LogTemp, Display, TEXT("calculated value %f"), action->InsistenceSatisfaction->GetSatisfationValue());
+		UE_LOG(LogTemp, Display, TEXT("the action being considered is %s"), *action->ActionName.ToString());
+		UE_LOG(LogTemp, Display, TEXT("satisfies goal %s"), *action->UtilityInstance->UtilityName.ToString());
+		UE_LOG(LogTemp, Display, TEXT("base value %f"), action->UtilityInstance->BaseUtility);
+		UE_LOG(LogTemp, Display, TEXT("calculated value %f"), action->UtilityInstance->GetUtilityValue());
 
-
-		//UE_LOG(LogTemp, Display, TEXT("calculated value %f"), action->InsistenceSatisfaction->GetFlags());
-
-		if (action->InsistenceSatisfaction->InsistenceName == MaxGoal->Name)
+		if (action->UtilityInstance)
 		{
-			CurrentAction = action;
-
-			if (action->InsistenceSatisfaction->GetSatisfationValue() > CurrentAction->InsistenceSatisfaction->GetSatisfationValue())
+			if (action->UtilityInstance->UtilityName == MaxGoal->Name)
 			{
 				CurrentAction = action;
-			}
 
-			//UE_LOG(LogTemp, Display, TEXT("the best action is %s and satisfies insistence %s by %f"), *CurrentAction->ActionName.ToString(), *CurrentAction->InsistenceSatisfaction->InsistenceName.ToString(), CurrentAction->InsistenceSatisfaction->BaseSatisfactionValue);
+				if (action->UtilityInstance->GetUtilityValue() > CurrentAction->UtilityInstance->GetUtilityValue())
+				{
+					CurrentAction = action;
+				}
+
+				//UE_LOG(LogTemp, Display, TEXT("the best action is %s and satisfies insistence %s by %f"), *CurrentAction->ActionName.ToString(), *CurrentAction->UtilityInstance->UtilityName.ToString(), CurrentAction->UtilityInstance->BaseUtility);
+			}
 		}
 	}
 
-	//UE_LOG(LogTemp, Display, TEXT("*********** The --final-- CurrentAction name = %s, insistence name = %s, base insistence value = %f, calculated insistence value %f"), *CurrentAction->ActionName.ToString(), *CurrentAction->InsistenceSatisfaction->InsistenceName.ToString(), CurrentAction->InsistenceSatisfaction->BaseSatisfactionValue, CurrentAction->InsistenceSatisfaction->GetSatisfationValue());
+	//UE_LOG(LogTemp, Display, TEXT("*********** The --final-- CurrentAction name = %s, insistence name = %s, base insistence value = %f, calculated insistence value %f"), *CurrentAction->ActionName.ToString(), *CurrentAction->UtilityInstance->UtilityName.ToString(), CurrentAction->UtilityInstance->BaseUtility, CurrentAction->UtilityInstance->GetUtilityValue());
 }
 
 UUtilityActionBase* UMyUtilityAIComponent::GetCurrentAction()
