@@ -17,7 +17,7 @@ public:
 	UGoalBase();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = EditorCategory)
-	FName Name = "";
+	FName GoalName = "";
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = EditorCategory)
 	float Insistence = 0;

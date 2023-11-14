@@ -11,16 +11,22 @@ UUtilityActionBase::UUtilityActionBase()
 void UUtilityActionBase::BeginPlay()
 {
 	//UE_LOG(LogTemp, Display, TEXT("UUtilityActionBase BeginPlay called"));
-	if (UtilityClass)
+	for (auto& utilityClass : UtilityClasses)
 	{
-		UtilityInstance = NewObject<UUtilityBase>(this, UtilityClass);
+		UUtilityBase* newUtilityInstance = NewObject<UUtilityBase>(this, utilityClass);
+
+		if (newUtilityInstance)
+		{
+			newUtilityInstance->BeginPlay();
+			UtilityInstances.Add(newUtilityInstance);
+		}
 	}
 
-	if (UtilityInstance)
-	{
-		UtilityInstance->BeginPlay();
-		//UE_LOG(LogTemp, Display, TEXT("UtilityInstance UObject Name = %s"), *UtilityInstance->GetName());
-	}
+	//if (UtilityInstances.Num() > 0)
+	//{
+	//	UtilityInstance->BeginPlay();
+	//	//UE_LOG(LogTemp, Display, TEXT("UtilityInstance UObject Name = %s"), *UtilityInstance->GetName());
+	//}
 }
 
 // TODO ******** what happens when a tickable object is none??????
@@ -42,3 +48,44 @@ UWorld* UUtilityActionBase::GetWorld() const
 
 	return GetOuter()->GetWorld();
 }
+
+void UUtilityActionBase::GetUtilityByName(const FName name, UUtilityBase* utility, bool& success)
+{
+	utility = ReturnUtilityByName(name);
+
+	if (utility)
+	{
+		success = true;
+	}
+	else
+	{
+		success = false;
+	}
+}
+
+bool UUtilityActionBase::HasUtilityByName(const FName name)
+{
+	for (auto currentUtility : UtilityInstances)
+	{
+		if (currentUtility->UtilityName == name)
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+UUtilityBase* UUtilityActionBase::ReturnUtilityByName(const FName name)
+{
+	for (auto currentUtility : UtilityInstances)
+	{
+		if (currentUtility->UtilityName == name)
+		{
+			return currentUtility;
+		}
+	}
+
+	return nullptr;
+}
+
