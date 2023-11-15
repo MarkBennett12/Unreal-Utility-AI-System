@@ -64,6 +64,9 @@ protected:
 	virtual void BeginPlay() override;
 
 public:	
+	void ConstructGoals();
+	void ConstructActions();
+
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
@@ -80,4 +83,6 @@ public:
 
 	// Check if an goal exists in the utility component
 	void UpdateBestAction(const float DeltaTime);
+	UGoalBase* GetMaxGoal(const float DeltaTime);
+	UUtilityActionBase* GetBestAction(const float DeltaTime);
 };
