@@ -27,7 +27,12 @@ void UUtilityBase::BeginPlay()
 	UE_LOG(LogTemp, Display, TEXT("UUtilityBase::BeginPlay called, outer is %s"), *this->GetOuter()->GetName());
 }
 
-float UUtilityBase::GetUtilityValue_Implementation()
+float UUtilityBase::GetUtilityValue_Implementation(const APawn* OwningPawn, const AController* OwningController, const float DeltaTime)
 {
 	return BaseUtility;
+}
+
+float UUtilityBase::GetFinalUtility(const AController* OwningController, const float DeltaTime)
+{
+	return GetUtilityValue(OwningController->GetPawn(), OwningController, DeltaTime);
 }

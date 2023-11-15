@@ -27,6 +27,8 @@ public:
 	void BeginPlay();
 
 	UFUNCTION(BlueprintNativeEvent, Category = EditorCategory)
-	float GetUtilityValue();
-	virtual float GetUtilityValue_Implementation();
+	float GetUtilityValue(const APawn* OwningPawn, const AController* OwningController, const float DeltaTime);
+	virtual float GetUtilityValue_Implementation(const APawn* OwningPawn, const AController* OwningController, const float DeltaTime);
+
+	float GetFinalUtility(const AController* OwningController, const float DeltaTime);
 };

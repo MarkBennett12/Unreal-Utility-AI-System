@@ -58,8 +58,8 @@ void UMyUtilityAIComponent::BeginPlay()
 	{
 		CurrentAction = ActionInstances[0];
 	}
-
-	UpdateBestAction();
+	
+	UpdateBestAction(0);
 }
 
 
@@ -69,30 +69,30 @@ void UMyUtilityAIComponent::TickComponent(float DeltaTime, ELevelTick TickType, 
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// ...
-	UpdateBestAction();
+	UpdateBestAction(DeltaTime);
 
 	// carry out the selected action
 	//UE_LOG(LogTemp, Display, TEXT("Tick, current action is %s and satisfies insistence %s by %f"), *CurrentAction->ActionName.ToString(), *CurrentAction->UtilityInstance->UtilityName.ToString(), CurrentAction->UtilityInstance->GetUtilityValue());
 	CurrentAction->Tick(DeltaTime);
 }
 
-void UMyUtilityAIComponent::UpdateBestAction()
+void UMyUtilityAIComponent::UpdateBestAction(const float DeltaTime)
 {
 	UE_LOG(LogTemp, Display, TEXT("****************************************** Evaluate Goals"));
 	// get the highest insistence
 	for (auto currentGoal : GoalInstances)
 	{
-		UE_LOG(LogTemp, Display, TEXT("currentGoal name %s, value %f"), *currentGoal->GoalName.ToString(), currentGoal->GetFinalInsistence(Cast<AController>(GetOwner())));
+		UE_LOG(LogTemp, Display, TEXT("currentGoal name %s, value %f"), *currentGoal->GoalName.ToString(), currentGoal->GetFinalInsistence(Cast<AController>(GetOwner()), DeltaTime));
 
 		// Use the curve value to test for max insistence value
-		if (currentGoal->GetFinalInsistence(Cast<AController>(GetOwner())) > MaxGoal->GetFinalInsistence(Cast<AController>(GetOwner())))
+		if (currentGoal->GetFinalInsistence(Cast<AController>(GetOwner()), DeltaTime) > MaxGoal->GetFinalInsistence(Cast<AController>(GetOwner()), DeltaTime))
 		{
 			MaxGoal = currentGoal;
 		}
 	}
 
 
-	UE_LOG(LogTemp, Display, TEXT("***** MaxGoal is %s with base value %f, final curve value %f"), *MaxGoal->GoalName.ToString(), MaxGoal->Insistence, MaxGoal->GetFinalInsistence(Cast<AController>(GetOwner())));
+	UE_LOG(LogTemp, Display, TEXT("***** MaxGoal is %s with base value %f, final curve value %f"), *MaxGoal->GoalName.ToString(), MaxGoal->BaseInsistence, MaxGoal->GetFinalInsistence(Cast<AController>(GetOwner()), DeltaTime));
 
 	// Get the action that satisfies the highest insistence
 	UE_LOG(LogTemp, Display, TEXT("****************************************** Evaluate Actions"));
@@ -107,7 +107,7 @@ void UMyUtilityAIComponent::UpdateBestAction()
 		UE_LOG(LogTemp, Display, TEXT("The action being considered is %s"), *action->ActionName.ToString());
 		for (auto utility : action->UtilityInstances)
 		{
-			UE_LOG(LogTemp, Display, TEXT("It satisfies goals %s with value %f"), *utility->UtilityName.ToString(), utility->GetUtilityValue());
+			UE_LOG(LogTemp, Display, TEXT("It satisfies goals %s with value %f"), *utility->UtilityName.ToString(), utility->GetFinalUtility(Cast<AController>(GetOwner()), DeltaTime));
 		}
 
 		if (action->UtilityInstances.Num() > 0)
@@ -119,15 +119,15 @@ void UMyUtilityAIComponent::UpdateBestAction()
 
 				UE_LOG(LogTemp, Display, TEXT("bestAction %s"), *bestAction->ActionName.ToString());
 				UE_LOG(LogTemp, Display, TEXT("bestAction utility name %s"), *bestAction->ReturnUtilityByName(MaxGoal->GoalName)->UtilityName.ToString());
-				UE_LOG(LogTemp, Display, TEXT("bestAction utility value %f"), bestAction->ReturnUtilityByName(MaxGoal->GoalName)->GetUtilityValue());
+				UE_LOG(LogTemp, Display, TEXT("bestAction utility value %f"), bestAction->ReturnUtilityByName(MaxGoal->GoalName)->GetFinalUtility(Cast<AController>(GetOwner()), DeltaTime));
 
 				// get the action that most satisfies max goal
-				if (action->ReturnUtilityByName(MaxGoal->GoalName)->GetUtilityValue() > bestAction->ReturnUtilityByName(MaxGoal->GoalName)->GetUtilityValue())
+				if (action->ReturnUtilityByName(MaxGoal->GoalName)->GetFinalUtility(Cast<AController>(GetOwner()), DeltaTime) > bestAction->ReturnUtilityByName(MaxGoal->GoalName)->GetFinalUtility(Cast<AController>(GetOwner()), DeltaTime))
 				{
 					bestAction = action;
 				}
 
-				UE_LOG(LogTemp, Display, TEXT("the best action is %s and satisfies insistence %s by %f"), *bestAction->ActionName.ToString(), *bestAction->ReturnUtilityByName(MaxGoal->GoalName)->UtilityName.ToString(), bestAction->ReturnUtilityByName(MaxGoal->GoalName)->GetUtilityValue());
+				UE_LOG(LogTemp, Display, TEXT("the best action is %s and satisfies insistence %s by %f"), *bestAction->ActionName.ToString(), *bestAction->ReturnUtilityByName(MaxGoal->GoalName)->UtilityName.ToString(), bestAction->ReturnUtilityByName(MaxGoal->GoalName)->GetFinalUtility(Cast<AController>(GetOwner()), DeltaTime));
 			}
 		}
 	}
@@ -163,39 +163,6 @@ void UMyUtilityAIComponent::GetGoalByName(const FName name, UGoalBase* insistenc
 		}
 	}
 	
-	success = false;
-}
-
-void UMyUtilityAIComponent::GetGoalInsistenceByName(const FName name, float& insistenceValue, bool& success)
-{
-	for (auto& currentGoal : GoalInstances)
-	{
-		if (currentGoal->GoalName == name)
-		{
-			insistenceValue = currentGoal->GetFinalInsistence(Cast<AController>(GetOwner()));
-			success = true;
-			return;
-		}
-	}
-
-	insistenceValue = 0;
-	success = false;
-}
-
-void UMyUtilityAIComponent::SetGoalInsistenceByName(const FName name, float insistenceValue, float& newInsistenceValue, bool& success)
-{
-	for (auto currentGoal : GoalInstances)
-	{
-		if (currentGoal->GoalName == name)
-		{
-			currentGoal->Insistence = insistenceValue;
-			newInsistenceValue = currentGoal->GetFinalInsistence(Cast<AController>(GetOwner()));
-
-			success = true;
-			return;
-		}
-	}
-
 	success = false;
 }
 

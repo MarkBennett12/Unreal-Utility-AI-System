@@ -71,14 +71,6 @@ public:
 	UFUNCTION(BlueprintPure)
 	void GetGoalByName(const FName name, UGoalBase* goal, bool& success);
 
-	// return insistance value from goal name
-	UFUNCTION(BlueprintPure)
-	void GetGoalInsistenceByName(const FName name, float& insistenceValue, bool& success);
-
-	// set the insistance value by goal name
-	UFUNCTION(BlueprintCallable)
-	void SetGoalInsistenceByName(const FName name, float insistenceValue, float& newInsistenceValue, bool& success);
-
 	// Check if an goal exists in the utility component
 	UFUNCTION(BlueprintPure)
 	bool HasGoal(const FName name);
@@ -87,5 +79,5 @@ public:
 	UUtilityActionBase* GetCurrentAction();
 
 	// Check if an goal exists in the utility component
-	void UpdateBestAction();
+	void UpdateBestAction(const float DeltaTime);
 };

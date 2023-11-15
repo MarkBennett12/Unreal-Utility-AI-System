@@ -7,14 +7,14 @@ UGoalBase::UGoalBase()
 {
 }
 
-float UGoalBase::GetInsistence_Implementation(const APawn* OwningPawn, const AController* OwningController)
+float UGoalBase::GetInsistence_Implementation(const APawn* OwningPawn, const AController* OwningController, const float DeltaTime)
 {
-	return Insistence;
+	return BaseInsistence;
 }
 
-float UGoalBase::GetFinalInsistence(const AController* OwningController)
+float UGoalBase::GetFinalInsistence(const AController* OwningController, const float DeltaTime)
 {
-	return InsistenceCurve->GetFloatValue(GetInsistence(OwningController->GetPawn(), OwningController));
+	return InsistenceCurve->GetFloatValue(GetInsistence(OwningController->GetPawn(), OwningController, DeltaTime));
 }
 
 UWorld* UGoalBase::GetWorld() const
