@@ -49,7 +49,7 @@ UWorld* UUtilityActionBase::GetWorld() const
 	return GetOuter()->GetWorld();
 }
 
-void UUtilityActionBase::GetUtilityByName(const FName name, UUtilityBase* utility, bool& success)
+void UUtilityActionBase::GetUtilityByName(const FName name, UUtilityBase*& utility, bool& success)
 {
 	utility = ReturnUtilityByName(name);
 

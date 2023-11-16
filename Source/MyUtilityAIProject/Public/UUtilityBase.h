@@ -16,8 +16,11 @@ public:
 	UUtilityBase();
 	~UUtilityBase();
 
+	// The name used by the Utility component to identify and process this action utility
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = EditorCategory)
 	FName UtilityName = "";
+
+	// The base value of this utility
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = EditorCategory)
 	float BaseUtility = 0;
 
@@ -26,6 +29,7 @@ public:
 
 	void BeginPlay();
 
+	// Use this to provide any Blueprint logic to dynamically calculate the utility value
 	UFUNCTION(BlueprintNativeEvent, Category = EditorCategory)
 	float GetUtilityValue(const APawn* OwningPawn, const AController* OwningController, const float DeltaTime);
 	virtual float GetUtilityValue_Implementation(const APawn* OwningPawn, const AController* OwningController, const float DeltaTime);

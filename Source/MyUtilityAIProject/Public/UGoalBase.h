@@ -16,15 +16,19 @@ class MYUTILITYAIPROJECT_API UGoalBase : public UObject
 public:
 	UGoalBase();
 
+	// The name used by the Utility component to identify and process this goal
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = EditorCategory)
 	FName GoalName = "";
 
+	// The base insistence of this goal
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = EditorCategory)
 	float BaseInsistence = 0;
 
+	// The curve asset used to generate the final value of this goal
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = EditorCategory)
 	UCurveFloat* InsistenceCurve = nullptr;
 
+	// Use this to provide any Blueprint logic to dynamically calculate the insistence value prior to passing through the curve
 	UFUNCTION(BlueprintNativeEvent, Category = EditorCategory)
 	float GetInsistence(const APawn* OwningPawn, const AController* OwningController, const float DeltaTime);
 	virtual float GetInsistence_Implementation(const APawn* OwningPawn, const AController* OwningController, const float DeltaTime);

@@ -37,14 +37,14 @@ public:
 	// Sets default values for this component's properties
 	UMyUtilityAIComponent();
 
-	// we need to store both the classes and pointers to the action instances, hence the two data structures
-	// I'm hoping to find a better way to do this, maybe editor only
+	// The list of goals attached to this Utility component
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = EditorCategory, meta = (ExposeOnSpawn = "true"))
 	TSet<TSubclassOf<UGoalBase>> GoalClasses;
 	// the pointers to the actual instances
 	UPROPERTY()
 	TArray<UGoalBase*> GoalInstances;
 
+	// The goals with the highest final value
 	UPROPERTY(BlueprintReadOnly)
 	UGoalBase* MaxGoal = nullptr;
 
@@ -70,14 +70,23 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	// return an goal struct by goal name
+	// return an goal object from the goal name
 	UFUNCTION(BlueprintPure)
-	void GetGoalByName(const FName name, UGoalBase* goal, bool& success);
+	void GetGoalByName(const FName name, UGoalBase*& goal, bool& success);
 
 	// Check if an goal exists in the utility component
 	UFUNCTION(BlueprintPure)
 	bool HasGoal(const FName name);
 
+	// Check if an action exists in the utility component
+	UFUNCTION(BlueprintPure)
+	bool HasAction(const FName name);
+
+	// Get an action object from the action name
+	UFUNCTION(BlueprintPure)
+	void GetActionByName(const FName name, UUtilityActionBase*& action, bool& success);
+
+	// Get the currently active action
 	UFUNCTION(BlueprintPure)
 	UUtilityActionBase* GetCurrentAction();
 

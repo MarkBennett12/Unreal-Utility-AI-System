@@ -20,30 +20,29 @@ public:
 
 	void BeginPlay();
 
+	// The name used by the Utility component to identify and process this action
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = EditorCategory)
 	FName ActionName = "";
 
-	//UPROPERTY(EditAnywhere, Category = EditorCategory)
-	//TSubclassOf<UUtilityBase> UtilityClass;
-	//UPROPERTY()
-	//UUtilityBase* UtilityInstance = nullptr;
-
+	// The list of utilities provided by this action
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = EditorCategory, meta = (ExposeOnSpawn = "true"))
 	TSet<TSubclassOf<UUtilityBase>> UtilityClasses;
 	// the pointers to the actual instances
 	UPROPERTY()
 	TArray<UUtilityBase*> UtilityInstances;
 
-	// Blueprint event for the user to implement thier action logic
+	// Called every tick of the Utility component
 	UFUNCTION(BlueprintImplementableEvent, Category = EditorCategory)
 	void OnTick(float DeltaTime);
 
-	// return an goal struct by goal name
+	// Return an goal from the goal name
 	UFUNCTION(BlueprintPure)
-	void GetUtilityByName(const FName name, UUtilityBase* utility, bool& success);
+	void GetUtilityByName(const FName name, UUtilityBase*& utility, bool& success);
+	// Checks to see if the named action exists in this component
 	UFUNCTION(BlueprintPure)
 	bool HasUtilityByName(const FName name);
 
+	// this is for the internal use of the Utility component
 	UUtilityBase* ReturnUtilityByName(const FName name);
 
 	void Tick(float DeltaTime);
