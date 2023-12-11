@@ -12,20 +12,25 @@ UMyUtilityAIComponent::UMyUtilityAIComponent()
 }
 
 // construct goal instances from Blueprint classes
-void UMyUtilityAIComponent::ConstructGoals()
+void UMyUtilityAIComponent::ValidateGoals()
 {
 	// instance all the goals
-	for (auto& goalClass : GoalClasses)
+	for (auto& goal : GoalInstances)
 	{
-		UGoalBase* newGoal = NewObject<UGoalBase>(this, goalClass);
 
-		if (newGoal)
+		// check if this utility is duplicated
+		int instanceCount = 0;
+		for (auto goalToCheck : GoalInstances)
 		{
-			GoalInstances.Add(newGoal);
+			if (goal->GetClass() == goalToCheck->GetClass())
+			{
+				instanceCount++;
+			}
 		}
-		else
+
+		if (instanceCount > 1)
 		{
-			UE_LOG(LogTemp, Display, TEXT("Goal invalid"));
+			UE_LOG(LogTemp, Error, TEXT("Goal %s is duplicated, duplicate goals may cause the Utility AI system to respond incorrectly."), *goal->GetName());
 		}
 	}
 }
@@ -57,13 +62,13 @@ void UMyUtilityAIComponent::BeginPlay()
 	Super::BeginPlay();
 
 	// construct goals and actions
-	if (GoalClasses.Num() == 0)
+	if (GoalInstances.Num() == 0)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("No goals attached to Utility component"));
 	}
 	else
 	{
-		ConstructGoals();
+		ValidateGoals();
 	}
 
 	if (ActionClasses.Num() == 0)

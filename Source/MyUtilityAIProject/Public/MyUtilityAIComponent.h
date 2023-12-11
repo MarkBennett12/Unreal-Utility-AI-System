@@ -38,10 +38,7 @@ public:
 	UMyUtilityAIComponent();
 
 	// The list of goals attached to this Utility component
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = EditorCategory, meta = (ExposeOnSpawn = "true"))
-	TSet<TSubclassOf<UGoalBase>> GoalClasses;
-	// the pointers to the actual instances
-	UPROPERTY()
+	UPROPERTY(EditAnywhere, Instanced, meta = (NoElementDuplicate))
 	TArray<UGoalBase*> GoalInstances;
 
 	// The goals with the highest final value
@@ -64,7 +61,7 @@ protected:
 	virtual void BeginPlay() override;
 
 public:	
-	void ConstructGoals();
+	void ValidateGoals();
 	void ConstructActions();
 
 	// Called every frame

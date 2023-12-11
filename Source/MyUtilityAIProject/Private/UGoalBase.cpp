@@ -12,9 +12,10 @@ float UGoalBase::GetInsistence_Implementation(const APawn* OwningPawn, const ACo
 	return BaseInsistence;
 }
 
+// the final goal insistenace is put through the curve and cannot be a negative value
 float UGoalBase::GetFinalInsistence(const AController* OwningController, const float DeltaTime)
 {
-	return InsistenceCurve->GetFloatValue(GetInsistence(OwningController->GetPawn(), OwningController, DeltaTime));
+	return FMath::Max(0.0f, InsistenceCurve->GetFloatValue(GetInsistence(OwningController->GetPawn(), OwningController, DeltaTime)));
 }
 
 UWorld* UGoalBase::GetWorld() const
