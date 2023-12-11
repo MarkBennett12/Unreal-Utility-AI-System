@@ -22,11 +22,11 @@ public:
 	UUtilityActionBase* OwningAction;
 
 	// The name used by the Utility component to identify and process this action utility
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = EditorCategory)
+	UPROPERTY(BlueprintReadOnly, Category = EditorCategory)
 	FName UtilityName = "";
 
 	// The base value of this utility
-	UPROPERTY(BlueprintReadWrite, Category = EditorCategory)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = EditorCategory)
 	float BaseUtility = 0;
 
 	// Need this so we can access the UE4 gameplay framework in the action Blueprints

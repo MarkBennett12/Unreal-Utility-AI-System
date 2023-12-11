@@ -111,6 +111,8 @@ void UMyUtilityAIComponent::TickComponent(float DeltaTime, ELevelTick TickType, 
 // performs the utility logic to get the highest goal and then get the action that most satisfies that goal
 void UMyUtilityAIComponent::UpdateBestAction(const float DeltaTime)
 {
+	UE_LOG(LogTemp, Display, TEXT("&&&&*************************************** AI Tick Started ******************************************"), LINE_TERMINATOR);
+
 	// there's no goals to process so exit now
 	if (GoalInstances.Num() == 0)
 	{
@@ -142,7 +144,7 @@ UGoalBase* UMyUtilityAIComponent::GetMaxGoal(const float DeltaTime)
 	// get the highest insistence
 	for (auto currentGoal : GoalInstances)
 	{
-		UE_LOG(LogTemp, Display, TEXT("currentAction name %s, value %f"), *currentGoal->GoalName.ToString(), currentGoal->GetFinalInsistence(Cast<AController>(GetOwner()), DeltaTime));
+		//UE_LOG(LogTemp, Display, TEXT("currentAction name %s, value %f"), *currentGoal->GoalName.ToString(), currentGoal->GetFinalInsistence(Cast<AController>(GetOwner()), DeltaTime));
 
 		// Use the final calculated insistence value to test for max goal
 		if (currentGoal->GetFinalInsistence(Cast<AController>(GetOwner()), DeltaTime) > highestGoal->GetFinalInsistence(Cast<AController>(GetOwner()), DeltaTime))
@@ -166,11 +168,11 @@ UUtilityActionBase* UMyUtilityAIComponent::GetBestAction(const float DeltaTime)
 	for (auto action : ActionInstances)
 	{
 
-		//UE_LOG(LogTemp, Display, TEXT("The action being considered is %s"), *action->ActionName.ToString());
-		//for (auto utility : action->UtilityInstances)
-		//{
-		//	UE_LOG(LogTemp, Display, TEXT("It satisfies goals %s with value %f"), *utility->UtilityName.ToString(), utility->GetFinalUtility(Cast<AController>(GetOwner()), DeltaTime));
-		//}
+		UE_LOG(LogTemp, Display, TEXT("The action being considered is %s"), *action->ActionName.ToString());
+		for (auto utility : action->UtilityInstances)
+		{
+			UE_LOG(LogTemp, Display, TEXT("It satisfies goals %s with value %f"), *utility->UtilityName.ToString(), utility->GetFinalUtility(Cast<AController>(GetOwner()), DeltaTime));
+		}
 
 		// this action has no utilites so go to the next action
 		if (action->UtilityInstances.Num() == 0)

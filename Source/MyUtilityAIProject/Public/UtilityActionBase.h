@@ -28,7 +28,7 @@ public:
 	FName ActionName = "";
 
 	// utility instances
-	UPROPERTY(EditAnywhere, Instanced)
+	UPROPERTY(EditAnywhere, Instanced, meta = (NoElementDuplicate))
 	TArray<UUtilityBase*> UtilityInstances;
 
 	// Called every tick of the Utility component

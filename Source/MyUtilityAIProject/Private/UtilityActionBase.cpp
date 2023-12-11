@@ -13,15 +13,29 @@ void UUtilityActionBase::Init()
 
 	for (auto utility : UtilityInstances)
 	{
+		// check if this utility is duplicated
+		int instanceCount = 0;
+		for (auto utilityToCheck : UtilityInstances)
+		{
+			if (utility->GetClass() == utilityToCheck->GetClass())
+			{
+				instanceCount++;
+			}
+		}
+
+		if (instanceCount > 1)
+		{
+			UE_LOG(LogTemp, Error, TEXT("Utility %s is duplicated, duplicate utilities may cause an action to respond incorrectly."), *utility->GetName());
+		}
+
 		utility->OwningAction = this;
 	}
-	// warn if there are no utilities in this action
-	//if (UtilityInstances.Num() == 0)
-	//{
-	//	//UE_LOG(LogTemp, Warning, TEXT("This action does not have any utilities. Add utilities to this action for it to be considered by the Utility AI system"));
-	//}
 
-	//UtilityInstance->BeginPlay();
+	// warn if there are no utilities in this action
+	if (UtilityInstances.Num() == 0)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Action %s does not have any utilities. Add utilities to this action for it to be considered by the Utility AI system"), *this->GetName());
+	}
 }
 
 // TODO ******** what happens when a tickable object is none??????
