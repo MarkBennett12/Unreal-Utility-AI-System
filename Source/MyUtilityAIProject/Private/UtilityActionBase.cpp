@@ -8,25 +8,20 @@ UUtilityActionBase::UUtilityActionBase()
 	//UtilityInstance = CreateDefaultSubobject<UUtilityBase>(TEXT("Insistence Satisfaction"));
 }
 
-void UUtilityActionBase::BeginPlay()
+void UUtilityActionBase::Init()
 {
-	//UE_LOG(LogTemp, Display, TEXT("UUtilityActionBase BeginPlay called"));
-	for (auto& utilityClass : UtilityClasses)
+
+	for (auto utility : UtilityInstances)
 	{
-		UUtilityBase* newUtilityInstance = NewObject<UUtilityBase>(this, utilityClass);
-
-		if (newUtilityInstance)
-		{
-			newUtilityInstance->BeginPlay();
-			UtilityInstances.Add(newUtilityInstance);
-		}
+		utility->OwningAction = this;
 	}
-
-	//if (UtilityInstances.Num() > 0)
+	// warn if there are no utilities in this action
+	//if (UtilityInstances.Num() == 0)
 	//{
-	//	UtilityInstance->BeginPlay();
-	//	//UE_LOG(LogTemp, Display, TEXT("UtilityInstance UObject Name = %s"), *UtilityInstance->GetName());
+	//	//UE_LOG(LogTemp, Warning, TEXT("This action does not have any utilities. Add utilities to this action for it to be considered by the Utility AI system"));
 	//}
+
+	//UtilityInstance->BeginPlay();
 }
 
 // TODO ******** what happens when a tickable object is none??????

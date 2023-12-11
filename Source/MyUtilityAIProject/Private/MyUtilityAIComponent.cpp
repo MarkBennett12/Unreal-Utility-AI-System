@@ -40,7 +40,7 @@ void UMyUtilityAIComponent::ConstructActions()
 
 		if (newAction)
 		{
-			newAction->BeginPlay();
+			newAction->Init();
 			ActionInstances.Add(newAction);
 		}
 		else

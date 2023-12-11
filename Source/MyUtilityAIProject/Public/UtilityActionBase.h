@@ -18,17 +18,17 @@ class MYUTILITYAIPROJECT_API UUtilityActionBase : public UObject
 public:
 	UUtilityActionBase();
 
+	void Init();
+
+	UFUNCTION(BlueprintImplementableEvent, Category = EditorCategory)
 	void BeginPlay();
 
 	// The name used by the Utility component to identify and process this action
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = EditorCategory)
 	FName ActionName = "";
 
-	// The list of utilities provided by this action
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = EditorCategory, meta = (ExposeOnSpawn = "true"))
-	TSet<TSubclassOf<UUtilityBase>> UtilityClasses;
-	// the pointers to the actual instances
-	UPROPERTY()
+	// utility instances
+	UPROPERTY(EditAnywhere, Instanced)
 	TArray<UUtilityBase*> UtilityInstances;
 
 	// Called every tick of the Utility component
