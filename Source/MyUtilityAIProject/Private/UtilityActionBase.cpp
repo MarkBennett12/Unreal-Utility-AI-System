@@ -85,6 +85,32 @@ bool UUtilityActionBase::HasUtilityByName(const FName name)
 	return false;
 }
 
+bool UUtilityActionBase::SatisfiesGoal(UGoalBase* goalToTest)
+{
+	for (auto currentUtility : UtilityInstances)
+	{
+		if (currentUtility->Satisfies == goalToTest->IsSatisfiedBy)
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+UUtilityBase* UUtilityActionBase::GetSatisfyingUtility(UGoalBase* goalToTest)
+{
+	for (auto currentUtility : UtilityInstances)
+	{
+		if (currentUtility->Satisfies == goalToTest->IsSatisfiedBy)
+		{
+			return currentUtility;
+		}
+	}
+
+	return nullptr;
+}
+
 UUtilityBase* UUtilityActionBase::ReturnUtilityByName(const FName name)
 {
 	for (auto currentUtility : UtilityInstances)

@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
 #include "UUtilityBase.h"
+#include "UGoalBase.h"
 #include "UtilityActionBase.generated.h"
 
 /**
@@ -41,6 +42,9 @@ public:
 	// Checks to see if the named action exists in this component
 	UFUNCTION(BlueprintPure)
 	bool HasUtilityByName(const FName name);
+
+	bool SatisfiesGoal(UGoalBase* goalToTest);
+	UUtilityBase* GetSatisfyingUtility(UGoalBase* goalToTest);
 
 	// this is for the internal use of the Utility component
 	UUtilityBase* ReturnUtilityByName(const FName name);

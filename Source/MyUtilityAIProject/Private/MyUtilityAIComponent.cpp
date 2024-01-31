@@ -19,16 +19,16 @@ void UMyUtilityAIComponent::ValidateGoals()
 	{
 
 		// check if this utility is duplicated
-		int instanceCount = 0;
+		int duplicateCount = 0;
 		for (auto goalToCheck : GoalInstances)
 		{
 			if (goal->GetClass() == goalToCheck->GetClass())
 			{
-				instanceCount++;
+				duplicateCount++;
 			}
 		}
 
-		if (instanceCount > 1)
+		if (duplicateCount > 1)
 		{
 			UE_LOG(LogTemp, Error, TEXT("Goal %s is duplicated, duplicate goals may cause the Utility AI system to respond incorrectly."), *goal->GetName());
 		}
@@ -185,7 +185,7 @@ UUtilityActionBase* UMyUtilityAIComponent::GetBestAction(const float DeltaTime)
 			continue;
 		}
 
-		if (action->HasUtilityByName(MaxGoal->GoalName))
+		if (action->SatisfiesGoal(MaxGoal))
 		{
 			// we have action that satisfies max goal
 			bestAction = action;
@@ -195,7 +195,7 @@ UUtilityActionBase* UMyUtilityAIComponent::GetBestAction(const float DeltaTime)
 			//UE_LOG(LogTemp, Display, TEXT("bestAction utility value %f"), bestAction->ReturnUtilityByName(MaxGoal->GoalName)->GetFinalUtility(Cast<AController>(GetOwner()), DeltaTime));
 
 			// get the action that most satisfies max goal
-			if (action->ReturnUtilityByName(MaxGoal->GoalName)->GetFinalUtility(Cast<AController>(GetOwner()), DeltaTime) > bestAction->ReturnUtilityByName(MaxGoal->GoalName)->GetFinalUtility(Cast<AController>(GetOwner()), DeltaTime))
+			if (action->GetSatisfyingUtility(MaxGoal)->GetFinalUtility(Cast<AController>(GetOwner()), DeltaTime) > bestAction->GetSatisfyingUtility(MaxGoal)->GetFinalUtility(Cast<AController>(GetOwner()), DeltaTime))
 			{
 				bestAction = action;
 			}

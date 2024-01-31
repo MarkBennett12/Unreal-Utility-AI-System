@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
+#include "GameplayTagsManager.h"
 
 #include "UUtilityBase.generated.h"
 /**
@@ -24,6 +26,9 @@ public:
 	// The name used by the Utility component to identify and process this action utility
 	UPROPERTY(BlueprintReadOnly, Category = "Utility AI")
 	FName UtilityName = "";
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Utility AI")
+	FGameplayTag Satisfies;
 
 	// The base value of this utility
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Utility AI")

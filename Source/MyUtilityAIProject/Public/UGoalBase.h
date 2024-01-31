@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
+#include "GameplayTagsManager.h"
 
 #include "UGoalBase.generated.h"
 
@@ -20,6 +22,9 @@ public:
 	// this should not be editable in the details panel but I don't know how to hide it
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Utility AI")
 	FName GoalName = "";
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Utility AI")
+	FGameplayTag IsSatisfiedBy;
 
 	// The base insistence of this goal
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Utility AI", meta = (UIMin = 0.0f, ClampMin = 0.0f))
