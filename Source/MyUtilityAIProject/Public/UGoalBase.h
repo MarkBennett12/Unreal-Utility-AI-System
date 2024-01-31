@@ -18,19 +18,19 @@ public:
 
 	// The name used by the Utility component to identify and process this goal
 	// this should not be editable in the details panel but I don't know how to hide it
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = EditorCategory)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Utility AI")
 	FName GoalName = "";
 
 	// The base insistence of this goal
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = EditorCategory, meta = (UIMin = 0.0f, ClampMin = 0.0f))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Utility AI", meta = (UIMin = 0.0f, ClampMin = 0.0f))
 	float BaseInsistence = 0;
 
 	// The curve asset used to generate the final value of this goal
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = EditorCategory)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Utility AI")
 	UCurveFloat* InsistenceCurve = nullptr;
 
 	// Use this to provide any Blueprint logic to dynamically calculate the insistence value prior to passing through the curve
-	UFUNCTION(BlueprintNativeEvent, Category = EditorCategory)
+	UFUNCTION(BlueprintNativeEvent, Category = "Utility AI")
 	float GetInsistence(const APawn* OwningPawn, const AController* OwningController, const float DeltaTime);
 	virtual float GetInsistence_Implementation(const APawn* OwningPawn, const AController* OwningController, const float DeltaTime);
 
