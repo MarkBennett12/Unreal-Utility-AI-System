@@ -22,11 +22,11 @@ public:
 	UUtilityActionBase* OwningAction;
 
 	// The name used by the Utility component to identify and process this action utility
-	UPROPERTY(BlueprintReadOnly, Category = EditorCategory)
+	UPROPERTY(BlueprintReadOnly, Category = "Utility AI")
 	FName UtilityName = "";
 
 	// The base value of this utility
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = EditorCategory)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Utility AI")
 	float BaseUtility = 0;
 
 	// Need this so we can access the UE4 gameplay framework in the action Blueprints
@@ -35,7 +35,7 @@ public:
 	void BeginPlay();
 
 	// Use this to provide any Blueprint logic to dynamically calculate the utility value
-	UFUNCTION(BlueprintNativeEvent, Category = EditorCategory)
+	UFUNCTION(BlueprintNativeEvent, Category = "Utility AI")
 	float GetUtilityValue(const APawn* OwningPawn, const AController* OwningController, const UUtilityActionBase* owningAction, const float DeltaTime);
 	virtual float GetUtilityValue_Implementation(const APawn* OwningPawn, const AController* OwningController, const UUtilityActionBase* owningAction, const float DeltaTime);
 

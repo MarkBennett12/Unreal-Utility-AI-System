@@ -20,11 +20,11 @@ public:
 
 	void Init();
 
-	UFUNCTION(BlueprintImplementableEvent, Category = EditorCategory)
+	UFUNCTION(BlueprintImplementableEvent, Category = "Utility AI")
 	void BeginPlay();
 
 	// The name used by the Utility component to identify and process this action
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = EditorCategory)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Utility AI")
 	FName ActionName = "";
 
 	// utility instances
@@ -32,7 +32,7 @@ public:
 	TArray<UUtilityBase*> UtilityInstances;
 
 	// Called every tick of the Utility component
-	UFUNCTION(BlueprintImplementableEvent, Category = EditorCategory)
+	UFUNCTION(BlueprintImplementableEvent, Category = "Utility AI")
 	void OnTick(float DeltaTime);
 
 	// Return an goal from the goal name

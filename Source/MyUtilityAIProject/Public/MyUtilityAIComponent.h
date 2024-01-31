@@ -2,7 +2,7 @@
 
 #pragma once
 
-const FString EditorCategory = "Utility AI";
+//const FString EditorCategory = "Utility AI";
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
@@ -18,17 +18,17 @@ const FString EditorCategory = "Utility AI";
 //{
 //	GENERATED_BODY()
 //public:
-//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = EditorCategory)
+//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Utility AI")
 //	FName Name = "";
 //
-//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = EditorCategory)
+//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Utility AI")
 //	float Value = 0;
 //
-//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = EditorCategory)
+//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Utility AI")
 //	UCurveFloat* InsistenceCurve;
 //};
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class MYUTILITYAIPROJECT_API UMyUtilityAIComponent : public UActorComponent
 {
 	GENERATED_BODY()
@@ -46,7 +46,7 @@ public:
 	UGoalBase* MaxGoal = nullptr;
 
 	// Actions base instances
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = EditorCategory, meta = (ExposeOnSpawn = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Utility AI", meta = (ExposeOnSpawn = "true"))
 	TSet<TSubclassOf<UUtilityActionBase>> ActionClasses;
 	// the pointers to the actual instances
 	UPROPERTY()
