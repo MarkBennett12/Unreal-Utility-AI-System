@@ -111,6 +111,21 @@ UUtilityBase* UUtilityActionBase::GetSatisfyingUtility(UGoalBase* goalToTest)
 	return nullptr;
 }
 
+float UUtilityActionBase::GetTotalSatisfaction(UGoalBase* goalToTest, const AController* OwningController, const float DeltaTime)
+{
+	float totalUtility = 0;
+
+	for (auto currentUtility : UtilityInstances)
+	{
+		if (currentUtility->Satisfies == goalToTest->IsSatisfiedBy)
+		{
+			totalUtility += currentUtility->GetFinalUtility(OwningController, DeltaTime);
+		}
+	}
+
+	return totalUtility;
+}
+
 UUtilityBase* UUtilityActionBase::ReturnUtilityByName(const FName name)
 {
 	for (auto currentUtility : UtilityInstances)

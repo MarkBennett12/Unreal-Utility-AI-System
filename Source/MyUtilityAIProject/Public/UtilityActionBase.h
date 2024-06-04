@@ -6,6 +6,7 @@
 #include "UObject/NoExportTypes.h"
 #include "UUtilityBase.h"
 #include "UGoalBase.h"
+
 #include "UtilityActionBase.generated.h"
 
 /**
@@ -45,6 +46,7 @@ public:
 
 	bool SatisfiesGoal(UGoalBase* goalToTest);
 	UUtilityBase* GetSatisfyingUtility(UGoalBase* goalToTest);
+	float GetTotalSatisfaction(UGoalBase* goalToTest, const AController* OwningController, const float DeltaTime);
 
 	// this is for the internal use of the Utility component
 	UUtilityBase* ReturnUtilityByName(const FName name);

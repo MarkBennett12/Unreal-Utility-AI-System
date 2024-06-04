@@ -192,10 +192,10 @@ UUtilityActionBase* UMyUtilityAIComponent::GetBestAction(const float DeltaTime)
 
 			//UE_LOG(LogTemp, Display, TEXT("bestAction %s"), *bestAction->ActionName.ToString());
 			//UE_LOG(LogTemp, Display, TEXT("bestAction utility name %s"), *bestAction->ReturnUtilityByName(MaxGoal->GoalName)->UtilityName.ToString());
-			//UE_LOG(LogTemp, Display, TEXT("bestAction utility value %f"), bestAction->ReturnUtilityByName(MaxGoal->GoalName)->GetFinalUtility(Cast<AController>(GetOwner()), DeltaTime));
+			//UE_LOG(LogTemp, Display, TEXT("bestAction utility value %f"), bestAction->ReturnUtilityByName(MaxGoal->GoalName)->GetFinalUtility(Cast<AController>(GetOwner()), DeltaTime));			
 
 			// get the action that most satisfies max goal
-			if (action->GetSatisfyingUtility(MaxGoal)->GetFinalUtility(Cast<AController>(GetOwner()), DeltaTime) > bestAction->GetSatisfyingUtility(MaxGoal)->GetFinalUtility(Cast<AController>(GetOwner()), DeltaTime))
+			if (action->GetTotalSatisfaction(MaxGoal, Cast<AController>(GetOwner()), DeltaTime) > bestAction->GetTotalSatisfaction(MaxGoal, Cast<AController>(GetOwner()), DeltaTime))
 			{
 				bestAction = action;
 			}
