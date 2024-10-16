@@ -174,10 +174,10 @@ UUtilityActionBase* UMyUtilityAIComponent::GetBestAction(const float DeltaTime)
 	{
 
 		UE_LOG(LogTemp, Display, TEXT("The action being considered is %s"), *action->ActionName.ToString());
-		for (auto utility : action->UtilityInstances)
-		{
-			UE_LOG(LogTemp, Display, TEXT("It satisfies goals %s with value %f"), *utility->UtilityName.ToString(), utility->GetFinalUtility(Cast<AController>(GetOwner()), DeltaTime));
-		}
+		//for (auto utility : action->UtilityInstances)
+		//{
+		//	UE_LOG(LogTemp, Display, TEXT("It satisfies goals %s with value %f"), *utility->UtilityName.ToString(), utility->GetFinalUtility(Cast<AController>(GetOwner()), DeltaTime));
+		//}
 
 		// this action has no utilites so go to the next action
 		if (action->UtilityInstances.Num() == 0)
@@ -197,6 +197,7 @@ UUtilityActionBase* UMyUtilityAIComponent::GetBestAction(const float DeltaTime)
 			// get the action that most satisfies max goal
 			if (action->GetTotalSatisfaction(MaxGoal, Cast<AController>(GetOwner()), DeltaTime) > bestAction->GetTotalSatisfaction(MaxGoal, Cast<AController>(GetOwner()), DeltaTime))
 			{
+				UE_LOG(LogTemp, Display, TEXT("total satisfaction is %f"), bestAction->GetTotalSatisfaction(MaxGoal, Cast<AController>(GetOwner()), DeltaTime));
 				bestAction = action;
 			}
 
@@ -207,6 +208,7 @@ UUtilityActionBase* UMyUtilityAIComponent::GetBestAction(const float DeltaTime)
 	// make sure best action is a valid action, warn the user if no best action is found for this goal
 	if (bestAction)
 	{
+		bestAction->OnExecuteAction(Cast<AController>(GetOwner())->GetPawn(), Cast<AController>(GetOwner()));
 		return bestAction;
 	}
 	else

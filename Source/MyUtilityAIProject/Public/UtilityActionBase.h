@@ -37,6 +37,10 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, Category = "Utility AI")
 	void OnTick(float DeltaTime);
 
+	// Called every tick of the Utility component
+	UFUNCTION(BlueprintImplementableEvent, Category = "Utility AI")
+	void OnExecuteAction(const APawn* OwningPawn, const AController* OwningController);
+
 	// Return an goal from the goal name
 	UFUNCTION(BlueprintPure)
 	void GetUtilityByName(const FName name, UUtilityBase*& utility, bool& success);

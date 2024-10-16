@@ -117,11 +117,15 @@ float UUtilityActionBase::GetTotalSatisfaction(UGoalBase* goalToTest, const ACon
 
 	for (auto currentUtility : UtilityInstances)
 	{
+		UE_LOG(LogTemp, Display, TEXT("currentUtility being considered %s"), *currentUtility->UtilityName.ToString());
 		if (currentUtility->Satisfies == goalToTest->IsSatisfiedBy)
 		{
+			UE_LOG(LogTemp, Display, TEXT("Utility %s satisfies goal %s by %f"), *currentUtility->UtilityName.ToString(), *goalToTest->GoalName.ToString(), goalToTest->GetFinalInsistence(OwningController, DeltaTime));
 			totalUtility += currentUtility->GetFinalUtility(OwningController, DeltaTime);
 		}
 	}
+
+	//UE_LOG(LogTemp, Display, TEXT("totalUtility = %f"), totalUtility);
 
 	return totalUtility;
 }
