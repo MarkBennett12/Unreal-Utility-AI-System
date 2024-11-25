@@ -198,6 +198,8 @@ UUtilityActionBase* UMyUtilityAIComponent::GetBestAction(const float DeltaTime)
 			if (action->GetTotalSatisfaction(MaxGoal, Cast<AController>(GetOwner()), DeltaTime) > bestAction->GetTotalSatisfaction(MaxGoal, Cast<AController>(GetOwner()), DeltaTime))
 			{
 				UE_LOG(LogTemp, Display, TEXT("total satisfaction is %f"), bestAction->GetTotalSatisfaction(MaxGoal, Cast<AController>(GetOwner()), DeltaTime));
+
+				// TODO: set up an action initialisation and action exit step here
 				bestAction = action;
 			}
 

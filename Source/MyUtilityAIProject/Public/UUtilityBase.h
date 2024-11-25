@@ -41,8 +41,8 @@ public:
 
 	// Use this to provide any Blueprint logic to dynamically calculate the utility value
 	UFUNCTION(BlueprintNativeEvent, Category = "Utility AI")
-	float GetUtilityValue(const APawn* OwningPawn, const AController* OwningController, const UUtilityActionBase* owningAction, const float DeltaTime);
-	virtual float GetUtilityValue_Implementation(const APawn* OwningPawn, const AController* OwningController, const UUtilityActionBase* owningAction, const float DeltaTime);
+	float GetUtilityValue(const APawn* OwningPawn, const AController* OwningController, const UUtilityActionBase* owningAction, float baseUtilityParameter, const float DeltaTime);
+	virtual float GetUtilityValue_Implementation(const APawn* OwningPawn, const AController* OwningController, const UUtilityActionBase* owningAction, float baseUtilityParameter, const float DeltaTime);
 
 	float GetFinalUtility(const AController* OwningController, const float DeltaTime);
 };
